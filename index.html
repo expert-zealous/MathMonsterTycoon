@@ -66,6 +66,15 @@ input, textarea{-webkit-user-select:text; user-select:text}
 .buff-active-vertical{animation:buffPulse 0.7s ease-in-out 3}
 .buff-active-center{animation:buffPulseCenter 0.7s ease-in-out 3}
 .monster-transparent{filter:drop-shadow(0 6px 12px rgba(0,0,0,0.25)) drop-shadow(0 2px 4px rgba(0,0,0,0.15)); background:transparent !important; border:none !important; box-shadow:none !important}
+@keyframes gachaSpin{0%{transform:rotate(0) scale(1)}25%{transform:rotate(5deg) scale(1.05)}50%{transform:rotate(-5deg) scale(1.05)}75%{transform:rotate(5deg) scale(1.02)}100%{transform:rotate(0) scale(1)}}
+@keyframes auraCommon{0%,100%{box-shadow:0 0 20px rgba(16,185,129,0.6),0 0 40px rgba(16,185,129,0.3)}50%{box-shadow:0 0 30px rgba(16,185,129,0.9),0 0 60px rgba(16,185,129,0.5)}}
+@keyframes auraRare{0%,100%{box-shadow:0 0 25px rgba(14,165,233,0.7),0 0 50px rgba(14,165,233,0.4)}50%{box-shadow:0 0 40px rgba(14,165,233,1),0 0 80px rgba(14,165,233,0.6)}}
+@keyframes auraLegend{0%,100%{box-shadow:0 0 30px rgba(245,158,11,0.8),0 0 70px rgba(245,158,11,0.5),0 0 100px rgba(236,72,153,0.4)}50%{box-shadow:0 0 50px rgba(245,158,11,1),0 0 100px rgba(245,158,11,0.7),0 0 140px rgba(236,72,153,0.6)}}
+.gacha-aura-common{animation:auraCommon 1.5s ease-in-out infinite}
+.gacha-aura-rare{animation:auraRare 1.5s ease-in-out infinite}
+.gacha-aura-legend{animation:auraLegend 1.2s ease-in-out infinite}
+@keyframes dailyPop{0%{transform:scale(0.8)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+.daily-claimed{opacity:0.6; filter:grayscale(0.5)}
 .monster-transparent img{filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2))}
 </style>
 </head>
@@ -140,6 +149,14 @@ input, textarea{-webkit-user-select:text; user-select:text}
         </div>
       </div>
     </div>
+    <button onclick="openDailyMissions()" class="mt-2.5 w-full bg-white/20 backdrop-blur border-2 border-white/30 rounded-2xl px-3 py-2 flex items-center justify-between shadow btn-native">
+      <span class="flex items-center gap-2"><span class="w-8 h-8 bg-white rounded-xl flex items-center justify-center text-lg">🎯</span><span class="font-black text-sm">MISI HARIAN</span><span id="missionBadge" class="bg-amber-400 text-slate-900 text-[11px] font-black px-2 py-0.5 rounded-full hidden">NEW!</span></span>
+      <span class="flex items-center gap-1 text-xs font-bold bg-white text-violet-700 px-3 py-1 rounded-full">🎁 Klaim →</span>
+    </button>
+    <div class="mt-1.5 flex items-center gap-1.5 text-[11px] font-bold opacity-90">
+      <span class="bg-white/20 px-2 py-0.5 rounded-full">⚡ Energi: untuk menetaskan telur</span>
+      <span class="bg-white/20 px-2 py-0.5 rounded-full">📚 Belajar = +1 ⚡ +1 🍖</span>
+    </div>
   </header>
 
   <main class="flex-1 overflow-y-auto hide-scroll pb-28">
@@ -209,6 +226,13 @@ input, textarea{-webkit-user-select:text; user-select:text}
         <div class="text-sm">
           <p class="font-black text-sky-800">Tips: Bayi → Dewasa</p>
           <p class="text-sky-700 leading-tight">Beri makan Bayi <b>5× 🍖</b> di tab <b>Makan</b> untuk evolusi. Koleksi 28 monster biar tidak bosan!</p>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-sky-500 to-cyan-500 rounded-2xl p-3 flex gap-3 items-start text-white shadow">
+        <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-xl shrink-0">⚡</div>
+        <div class="text-sm">
+          <p class="font-black">Energi ⚡ untuk apa?</p>
+          <p class="font-medium leading-tight opacity-95">⚡ dipakai untuk <b>mengisi progress telur</b> di Inkubator (1 ⚡ = 1 progress, butuh 5). Dapatkan ⚡ gratis via <b>📚 Belajar (jawab benar +1 ⚡)</b> & <b>🎯 Misi Harian</b>! Jangan lupa klaim tiap hari!</p>
         </div>
       </div>
     </section>
@@ -522,56 +546,43 @@ input, textarea{-webkit-user-select:text; user-select:text}
         </div>
       </div>
       <div class="grid grid-cols-1 gap-4">
-        <div class="bg-white rounded-[24px] p-4 shadow-md border-2 border-slate-100 flex gap-4 items-center relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-slate-100 text-slate-600 text-[10px] font-black px-3 py-1 rounded-bl-2xl tracking-widest">PEMULA</div>
-          <div class="w-20 h-20 bg-amber-100 rounded-[20px] flex items-center justify-center shrink-0 border-2 border-amber-200 overflow-hidden p-1">
-            <img src="assets/egg-basic.png" alt="Basic" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-            <span style="display:none" class="text-4xl w-full h-full flex items-center justify-center">🥚</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-black text-slate-800 leading-none">Telur Biasa</h3>
-            <p class="text-xs text-slate-500 font-medium">70% Biasa • 25% Langka • 5% Legenda</p>
-            <div class="flex gap-1 mt-1.5">
-              <span class="w-2 h-2 bg-emerald-400 rounded-full"></span><span class="w-2 h-2 bg-emerald-400 rounded-full"></span><span class="w-2 h-2 bg-slate-200 rounded-full"></span><span class="w-2 h-2 bg-slate-200 rounded-full"></span>
+        <!-- GACHA MESIN -->
+        <div class="bg-gradient-to-br from-violet-600 via-fuchsia-500 to-pink-500 rounded-[28px] p-4 text-white relative overflow-hidden shadow-xl">
+          <div class="absolute -right-10 -top-10 text-[140px] opacity-15 rotate-12 select-none">🎰</div>
+          <div class="relative">
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur rounded-full px-3 py-1 text-xs font-black tracking-widest">🎲 GACHA TELUR MISTERI</div>
+            <h3 class="font-black text-2xl mt-2 leading-none">Gacha Telur!</h3>
+            <p class="text-sm font-medium opacity-95 mt-1">Pakai 💎 untuk putar! Aura berbeda tiap tier!</p>
+            <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+              <div class="bg-white rounded-2xl p-2 text-slate-800">
+                <div class="text-lg">🥚</div><div class="font-black text-emerald-600 text-xs">BIASA</div><div class="text-[11px] font-black">70%</div><div class="w-full h-1.5 bg-emerald-100 rounded-full mt-1"><div class="h-full bg-emerald-500 rounded-full" style="width:70%"></div></div><div class="text-[10px] font-bold text-emerald-600">Aura Hijau</div>
+              </div>
+              <div class="bg-white rounded-2xl p-2 text-slate-800 border-2 border-sky-300">
+                <div class="text-lg">🍀🥚</div><div class="font-black text-sky-600 text-xs">LANGKA</div><div class="text-[11px] font-black">25%</div><div class="w-full h-1.5 bg-sky-100 rounded-full mt-1"><div class="h-full bg-sky-500 rounded-full" style="width:25%"></div></div><div class="text-[10px] font-bold text-sky-600">Aura Biru</div>
+              </div>
+              <div class="bg-white rounded-2xl p-2 text-slate-800 border-2 border-amber-300">
+                <div class="text-lg">👑🥚</div><div class="font-black text-amber-600 text-xs">LEGENDA</div><div class="text-[11px] font-black">5%</div><div class="w-full h-1.5 bg-amber-100 rounded-full mt-1"><div class="h-full bg-amber-500 rounded-full" style="width:5%"></div></div><div class="text-[10px] font-bold text-amber-600">Aura Emas</div>
+              </div>
             </div>
-            <button onclick="buyEgg('basic')" class="mt-2.5 bg-slate-800 text-white font-black px-5 py-2 rounded-full text-sm flex items-center gap-2 btn-native btn-3d">
-              Beli <span class="bg-white text-slate-800 px-2 py-0.5 rounded-full text-xs">20 💎</span>
-            </button>
-          </div>
-        </div>
-        <div class="bg-white rounded-[24px] p-4 shadow-md border-2 border-sky-200 flex gap-4 items-center relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-sky-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-2xl tracking-widest">POPULER ⭐</div>
-          <div class="w-20 h-20 bg-sky-100 rounded-[20px] flex items-center justify-center shrink-0 border-2 border-sky-200 overflow-hidden p-1">
-            <img src="assets/egg-lucky.png" alt="Lucky" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-            <span style="display:none" class="text-4xl w-full h-full flex items-center justify-center">🍀🥚</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-black text-slate-800 leading-none">Telur Keberuntungan</h3>
-            <p class="text-xs text-slate-500 font-medium">40% Biasa • 45% Langka • 15% Legenda</p>
-            <div class="flex gap-1 mt-1.5">
-              <span class="w-2 h-2 bg-sky-400 rounded-full"></span><span class="w-2 h-2 bg-sky-400 rounded-full"></span><span class="w-2 h-2 bg-sky-400 rounded-full"></span><span class="w-2 h-2 bg-slate-200 rounded-full"></span>
+            <div class="mt-3 bg-white rounded-2xl p-3 flex items-center gap-3 shadow">
+              <div class="w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 rounded-2xl flex items-center justify-center text-3xl flex-col border-2 border-violet-200">
+                <span class="text-2xl">🎰</span><span class="text-[9px] font-black text-violet-700">GACHA</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-black text-slate-800 text-sm">Mesin Gacha Misteri</div>
+                <div class="text-xs font-medium text-slate-500">5% Legend = tantangan! Aura emas + confetti spesial!</div>
+                <div class="flex items-center gap-1.5 mt-1"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span><span class="text-[10px] font-bold text-slate-600">70% Biasa</span><span class="w-2 h-2 bg-sky-500 rounded-full"></span><span class="text-[10px] font-bold text-slate-600">25% Langka</span><span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="text-[10px] font-bold text-slate-600">5% Legend</span></div>
+              </div>
             </div>
-            <button onclick="buyEgg('lucky')" class="mt-2.5 bg-sky-500 text-white font-black px-5 py-2 rounded-full text-sm flex items-center gap-2 btn-native btn-3d">
-              Beli <span class="bg-white text-sky-600 px-2 py-0.5 rounded-full text-xs">50 💎</span>
-            </button>
-          </div>
-        </div>
-        <div class="bg-white rounded-[24px] p-4 shadow-lg border-2 border-amber-300 flex gap-4 items-center relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-r from-amber-50 to-transparent pointer-events-none"></div>
-          <div class="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-2xl tracking-widest">🔥 LEGENDA</div>
-          <div class="w-20 h-20 bg-gradient-to-br from-amber-200 to-orange-200 rounded-[20px] flex items-center justify-center shrink-0 border-2 border-amber-300 relative overflow-hidden p-1">
-            <img src="assets/egg-legend.png" alt="Legend" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-            <span style="display:none" class="text-4xl w-full h-full flex items-center justify-center">👑🥚</span>
-          </div>
-          <div class="flex-1 min-w-0 relative">
-            <h3 class="font-black text-slate-800 leading-none">Telur Legenda</h3>
-            <p class="text-xs text-slate-600 font-bold">10% Biasa • 30% Langka • 60% Legenda ✨</p>
-            <div class="flex gap-1 mt-1.5">
-              <span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+            <div class="grid grid-cols-2 gap-2 mt-3">
+              <button onclick="doGacha(1)" class="bg-white text-violet-700 font-black py-3.5 rounded-2xl shadow btn-native btn-3d flex flex-col items-center justify-center gap-0.5">
+                <span class="text-sm">🎲 GACHA 1x</span><span class="text-xs bg-violet-600 text-white px-3 py-0.5 rounded-full">20 💎</span>
+              </button>
+              <button onclick="doGacha(10)" class="bg-gradient-to-r from-amber-400 to-orange-500 text-white font-black py-3.5 rounded-2xl shadow btn-native btn-3d flex flex-col items-center justify-center gap-0.5 border-2 border-white">
+                <span class="text-sm">🎉 GACHA 10x</span><span class="text-xs bg-white text-orange-600 px-3 py-0.5 rounded-full">180 💎 <span class="line-through opacity-60">200</span> Hemat!</span>
+              </button>
             </div>
-            <button onclick="buyEgg('legend')" class="mt-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black px-5 py-2 rounded-full text-sm flex items-center gap-2 btn-native btn-3d shadow">
-              Beli <span class="bg-white text-orange-600 px-2 py-0.5 rounded-full text-xs">100 💎</span>
-            </button>
+            <p class="text-center text-[11px] font-bold opacity-80 mt-2">💡 Legend sulit! 5% saja. Aura emas + efek spesial ✨</p>
           </div>
         </div>
         <div class="bg-white rounded-[24px] p-4 shadow-md border-2 border-emerald-100 flex gap-4 items-center">
@@ -717,6 +728,69 @@ input, textarea{-webkit-user-select:text; user-select:text}
           <span class="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></span>
           <span class="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style="animation-delay:0.15s"></span>
           <span class="w-2 h-2 bg-violet-400 rounded-full animate-bounce" style="animation-delay:0.3s"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Daily Missions Modal -->
+<div id="dailyModal" class="fixed inset-0 z-[60] hidden">
+  <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onclick="closeDailyMissions()"></div>
+  <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 max-w-[420px] mx-auto max-h-[85vh] overflow-y-auto hide-scroll">
+    <div class="bg-white rounded-[28px] shadow-2xl overflow-hidden animate-pop">
+      <div class="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 p-4 text-white relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 text-7xl opacity-20">🎯</div>
+        <div class="relative flex items-center justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur rounded-full px-3 py-1 text-[11px] font-black tracking-widest">🎁 MISI HARIAN</div>
+            <h3 class="font-black text-xl leading-none mt-1">Misi Hari Ini</h3>
+            <p class="text-xs font-semibold opacity-90">Selesaikan & klaim hadiah gratis! Reset jam 00:00</p>
+          </div>
+          <button onclick="closeDailyMissions()" class="w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-xl btn-native">✕</button>
+        </div>
+        <div class="mt-3 flex items-center gap-2 text-xs">
+          <span class="bg-white/20 px-2 py-1 rounded-full font-bold">📅 <span id="dailyDateDisplay">-</span></span>
+          <span class="bg-white text-violet-700 px-3 py-1 rounded-full font-black" id="dailyProgressDisplay">0/7 Selesai</span>
+        </div>
+      </div>
+      <div class="p-4 space-y-3 bg-slate-50" id="dailyMissionsList">
+        <!-- injected by JS -->
+      </div>
+      <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
+        <div class="flex-1 bg-amber-50 border border-amber-200 rounded-xl p-2 flex items-center gap-2">
+          <span class="text-lg">💡</span><span class="text-xs font-bold text-amber-800">Energi ⚡ dipakai untuk menetaskan telur (1 energi = 1 progress). Dapatkan via belajar & misi!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gacha Result Modal -->
+<div id="gachaModal" class="fixed inset-0 z-[65] hidden">
+  <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeGachaModal()"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[32px] shadow-2xl w-full max-w-[380px] overflow-hidden animate-pop relative text-center">
+      <div id="gachaAuraWrap" class="p-6 relative">
+        <div id="gachaAura" class="w-32 h-32 mx-auto rounded-[28px] flex items-center justify-center text-5xl relative">
+          <span id="gachaEmoji">🥚</span>
+        </div>
+        <h3 id="gachaTitle" class="font-black text-2xl mt-4 leading-none">Memutar Gacha...</h3>
+        <p id="gachaSubtitle" class="text-sm font-bold text-slate-500 mt-1">Semoga beruntung!</p>
+        <div id="gachaResultCard" class="hidden mt-4 bg-slate-50 border-2 border-slate-100 rounded-[24px] p-4">
+          <div id="gachaResultTier" class="inline-flex text-[11px] font-black tracking-widest px-3 py-1 rounded-full">BIASA</div>
+          <h4 id="gachaResultName" class="font-black text-lg mt-2">Telur Biasa</h4>
+          <p id="gachaResultDesc" class="text-xs font-medium text-slate-500">70% peluang</p>
+          <div id="gachaMonsterPreview" class="hidden mt-3 w-20 h-20 mx-auto bg-white rounded-2xl flex items-center justify-center border-2 border-slate-100 overflow-hidden p-1">
+            <img id="gachaMonsterImg" src="" class="w-full h-full object-contain hidden">
+            <span id="gachaMonsterEmoji" class="text-4xl">🦖</span>
+          </div>
+        </div>
+        <button id="gachaCloseBtn" onclick="closeGachaModal()" class="hidden mt-4 w-full bg-slate-900 text-white font-black py-3 rounded-2xl btn-native btn-3d">Keren! ✨</button>
+        <div id="gachaSpinning" class="mt-4 flex justify-center gap-1">
+          <span class="w-2 h-2 bg-violet-500 rounded-full animate-bounce"></span>
+          <span class="w-2 h-2 bg-fuchsia-500 rounded-full animate-bounce" style="animation-delay:0.15s"></span>
+          <span class="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style="animation-delay:0.3s"></span>
         </div>
       </div>
     </div>
@@ -1189,6 +1263,7 @@ window.mergeMonsters=(name, stars)=>{
   if(keeper.tier==='legend'){ keeper.stats.power=Math.min(12, keeper.stats.power+1); }
   else if(keeper.tier==='rare'){ keeper.stats.speed=Math.min(12, keeper.stats.speed+1); }
   saveState(); renderAll();
+  updateMissionProgress('merge',1);
   spawnConfetti(30); playWin(); vibrate([60,40,80]);
   showToast('⭐ MERGE! '+name+' jadi ⭐'+keeper.stars+'! +1 semua stat!','bg-violet-600');
 };
@@ -1270,7 +1345,254 @@ function renderArena(){
   if(!arenaBattle){ document.getElementById('arenaRaceView').classList.add('hidden'); document.getElementById('arenaDuelView').classList.add('hidden'); document.getElementById('arenaResult').classList.add('hidden'); document.getElementById('arenaPicker').classList.remove('hidden'); }
 }
 
-function renderAll(){ updateResources(); renderPenetasan(); renderMakan(); renderArena(); saveState(); }
+function renderAll(){ updateResources(); renderPenetasan(); renderMakan(); renderArena(); renderDailyMissions(); saveState(); }
+
+// ---------- MISI HARIAN ----------
+const DAILY_MISSIONS_DEF = [
+  {id:'login', name:'Login Harian', desc:'Buka game hari ini', icon:'📅', target:1, reward:{diamonds:5, meat:2, energy:2}},
+  {id:'study', name:'Rajin Belajar', desc:'Jawab 5 soal benar', icon:'📚', target:5, reward:{meat:3, energy:5, diamonds:5}},
+  {id:'hatch', name:'Penetas Handal', desc:'Tetaskan 1 telur', icon:'🥚', target:1, reward:{diamonds:10, meat:2, egg:'basic'}},
+  {id:'feed', name:'Juru Masak', desc:'Beri makan 5x', icon:'🍖', target:5, reward:{energy:5, diamonds:5, egg:'basic'}},
+  {id:'raceWin', name:'Juara Balap', desc:'Menang 1 balapan', icon:'🏁', target:1, reward:{diamonds:12, meat:3, energy:2}},
+  {id:'duelWin', name:'Jago Duel', desc:'Menang 1 duel', icon:'⚔️', target:1, reward:{diamonds:12, energy:3, egg:'basic'}},
+  {id:'merge', name:'Master Merge', desc:'Merge 1x', icon:'⭐', target:1, reward:{diamonds:15, egg:'lucky'}},
+];
+function getTodayStr(){ return new Date().toISOString().slice(0,10); }
+function initDailyMissions(){
+  const today=getTodayStr();
+  if(!state.daily || state.daily.date!==today){
+    state.daily={ date:today, progress:{}, claimed:{} };
+    DAILY_MISSIONS_DEF.forEach(m=> state.daily.progress[m.id]= (m.id==='login'?1:0));
+    saveState();
+  }
+  // ensure all missions have progress
+  DAILY_MISSIONS_DEF.forEach(m=>{ if(state.daily.progress[m.id]===undefined) state.daily.progress[m.id]=0; });
+}
+function updateMissionProgress(id, inc=1){
+  if(!state.daily) initDailyMissions();
+  const today=getTodayStr();
+  if(state.daily.date!==today) initDailyMissions();
+  const def=DAILY_MISSIONS_DEF.find(x=>x.id===id);
+  if(!def) return;
+  if(state.daily.progress[id]>=def.target) return;
+  state.daily.progress[id]=Math.min(def.target, (state.daily.progress[id]||0)+inc);
+  saveState(); renderDailyMissions();
+  if(state.daily.progress[id]>=def.target && !state.daily.claimed[id]){
+    showToast(`🎯 Misi "${def.name}" selesai! Klaim hadiah!`, 'bg-violet-600');
+    vibrate(30);
+  }
+}
+function renderDailyMissions(){
+  const list=document.getElementById('dailyMissionsList');
+  const badge=document.getElementById('missionBadge');
+  const dateEl=document.getElementById('dailyDateDisplay');
+  const progEl=document.getElementById('dailyProgressDisplay');
+  if(!list) return;
+  initDailyMissions();
+  const today=getTodayStr();
+  if(dateEl) dateEl.textContent=today;
+  const total=DAILY_MISSIONS_DEF.length;
+  const done=DAILY_MISSIONS_DEF.filter(m=> (state.daily.progress[m.id]||0)>=m.target && state.daily.claimed[m.id]).length;
+  const claimable=DAILY_MISSIONS_DEF.filter(m=> (state.daily.progress[m.id]||0)>=m.target && !state.daily.claimed[m.id]).length;
+  if(progEl) progEl.textContent=`${done}/${total} Diklaim`;
+  if(badge){ if(claimable>0){ badge.textContent=claimable+' NEW!'; badge.classList.remove('hidden'); } else badge.classList.add('hidden'); }
+  list.innerHTML='';
+  DAILY_MISSIONS_DEF.forEach(m=>{
+    const prog=state.daily.progress[m.id]||0;
+    const isDone=prog>=m.target;
+    const isClaimed=!!state.daily.claimed[m.id];
+    const pct=Math.min(100, Math.round(prog/m.target*100));
+    const rewardText=[];
+    if(m.reward.diamonds) rewardText.push(m.reward.diamonds+' 💎');
+    if(m.reward.meat) rewardText.push(m.reward.meat+' 🍖');
+    if(m.reward.energy) rewardText.push(m.reward.energy+' ⚡');
+    if(m.reward.egg) rewardText.push('🥚 '+m.reward.egg);
+    const card=document.createElement('div');
+    card.className=`bg-white rounded-2xl p-3 flex items-center gap-3 border-2 ${isClaimed?'border-emerald-200 bg-emerald-50 daily-claimed': isDone?'border-violet-300 bg-violet-50':'border-slate-100'} shadow-sm`;
+    card.innerHTML=`
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 ${isClaimed?'bg-emerald-100':'bg-slate-50'} border-2 ${isDone?'border-emerald-200':''}">${m.icon}</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-black text-slate-800 text-sm leading-none">${m.name} ${isClaimed?'✅': isDone?'🎁':''}</div>
+        <div class="text-xs font-medium text-slate-500 leading-tight">${m.desc}</div>
+        <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full ${isDone?'bg-emerald-500':'bg-violet-500'} transition-all" style="width:${pct}%"></div></div>
+        <div class="flex justify-between text-[11px] font-bold mt-0.5"><span class="${isDone?'text-emerald-600':'text-slate-500'}">${prog}/${m.target}</span><span class="text-amber-600">${rewardText.join(' • ')}</span></div>
+      </div>
+      <button onclick="claimMission('${m.id}')" ${!isDone || isClaimed?'disabled':''} class="shrink-0 font-black px-4 py-2.5 rounded-full text-xs btn-native ${isClaimed?'bg-emerald-100 text-emerald-700':'bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white btn-3d'} disabled:opacity-40 disabled:grayscale">${isClaimed?'Diklaim':(isDone?'Klaim':'Progres')}</button>
+    `;
+    list.appendChild(card);
+  });
+  // Bonus all done
+  if(done===total){
+    const bonus=document.createElement('div');
+    bonus.className='bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl p-3 text-white text-center font-black';
+    bonus.innerHTML='🎉 Semua misi selesai! Bonus harian: +10 💎 +1 🥚 Acak!';
+    list.appendChild(bonus);
+  }
+}
+function claimMission(id){
+  const def=DAILY_MISSIONS_DEF.find(x=>x.id===id);
+  if(!def) return;
+  const prog=state.daily.progress[id]||0;
+  if(prog<def.target){ showToast('❌ Belum selesai!','bg-red-500'); return; }
+  if(state.daily.claimed[id]){ showToast('✅ Sudah diklaim','bg-slate-500'); return; }
+  state.daily.claimed[id]=true;
+  // grant rewards
+  if(def.reward.diamonds) state.diamonds+=def.reward.diamonds;
+  if(def.reward.meat) state.meat+=def.reward.meat;
+  if(def.reward.energy) state.energy+=def.reward.energy;
+  if(def.reward.egg){
+    const eggType=def.reward.egg;
+    // random if needed
+    let type=eggType;
+    if(eggType==='basic' && Math.random()<0.15) type='lucky'; // 15% upgrade randomly
+    state.eggs.push({id:uid('egg'), type, progress:0, max:5});
+  }
+  // check all claimed bonus
+  const allClaimed=DAILY_MISSIONS_DEF.every(m=>state.daily.claimed[m.id]);
+  if(allClaimed && !state.daily.claimed['_bonus']){
+    state.daily.claimed['_bonus']=true;
+    state.diamonds+=10;
+    // random egg
+    const r=Math.random();
+    let bonusType='basic';
+    if(r<0.05) bonusType='legend';
+    else if(r<0.30) bonusType='lucky';
+    state.eggs.push({id:uid('egg'), type:bonusType, progress:0, max:5});
+    showToast('🎉 Bonus semua misi: +10 💎 +1 🥚 '+(bonusType==='legend'?'👑':bonusType==='lucky'?'🍀':'')+'!','bg-amber-500');
+    spawnConfetti(30);
+  }
+  saveState(); renderAll();
+  showToast(`🎁 Klaim "${def.name}" +${Object.entries(def.reward).map(([k,v])=>v+' '+k).join(', ')}`,'bg-emerald-600');
+  playWin(); vibrate(40); spawnConfetti(20);
+}
+window.openDailyMissions=()=>{ initDailyMissions(); renderDailyMissions(); document.getElementById('dailyModal').classList.remove('hidden'); vibrate(20); };
+window.closeDailyMissions=()=> document.getElementById('dailyModal').classList.add('hidden');
+
+// ---------- GACHA Toko ----------
+const GACHA_COST_1=20;
+const GACHA_COST_10=180;
+function rollGachaTier(){
+  const r=Math.random();
+  if(r<0.70) return 'common';
+  if(r<0.95) return 'rare';
+  return 'legend';
+}
+window.doGacha=(count)=>{
+  const cost=count===10? GACHA_COST_10 : GACHA_COST_1;
+  if(state.diamonds<cost){ showToast(`❌ Butuh ${cost} 💎, kamu punya ${state.diamonds}`,'bg-red-500'); playBuzz(); vibrate(50); return; }
+  state.diamonds-=cost; saveState(); updateResources();
+  vibrate(50); playPop();
+  // show gacha modal
+  const modal=document.getElementById('gachaModal');
+  const auraWrap=document.getElementById('gachaAuraWrap');
+  const aura=document.getElementById('gachaAura');
+  const emoji=document.getElementById('gachaEmoji');
+  const title=document.getElementById('gachaTitle');
+  const sub=document.getElementById('gachaSubtitle');
+  const card=document.getElementById('gachaResultCard');
+  const closeBtn=document.getElementById('gachaCloseBtn');
+  const spinning=document.getElementById('gachaSpinning');
+  modal.classList.remove('hidden');
+  card.classList.add('hidden'); closeBtn.classList.add('hidden');
+  spinning.classList.remove('hidden');
+  aura.className='w-32 h-32 mx-auto rounded-[28px] flex items-center justify-center text-5xl relative bg-slate-100';
+  emoji.textContent='🎰'; emoji.className='text-5xl animate-bounce';
+  aura.style.animation='gachaSpin 0.6s ease-in-out infinite';
+  title.textContent='Memutar '+count+'x Gacha...';
+  sub.textContent='Aura akan menentukan tier!';
+
+  // simulate spin
+  let spins=0;
+  const spinInt=setInterval(()=>{
+    const tiers=['common','rare','legend'];
+    const t=tiers[Math.floor(Math.random()*3)];
+    emoji.textContent=t==='common'?'🥚':t==='rare'?'🍀🥚':'👑🥚';
+    spins++;
+    if(spins>12){
+      clearInterval(spinInt);
+      // final results
+      const results=[];
+      for(let i=0;i<count;i++) results.push(rollGachaTier());
+      // give eggs
+      const tierToEgg={common:'basic', rare:'lucky', legend:'legend'};
+      results.forEach(tier=>{
+        const eggType=tierToEgg[tier];
+        state.eggs.push({id:uid('egg'), type:eggType, progress:0, max:5, gachaTier:tier});
+      });
+      saveState(); renderAll(); updateResources();
+      // show result (for 10x show summary, for 1x show single)
+      spinning.classList.add('hidden');
+      aura.style.animation='';
+      if(count===1){
+        const tier=results[0];
+        showSingleGachaResult(tier);
+      } else {
+        showMultiGachaResult(results);
+      }
+      // mission progress for gacha? count as hatch? not, but give feed incentive
+    }
+  }, 120);
+  // track mission for gacha as study? not needed
+}
+function showSingleGachaResult(tier){
+  const aura=document.getElementById('gachaAura');
+  const emoji=document.getElementById('gachaEmoji');
+  const title=document.getElementById('gachaTitle');
+  const sub=document.getElementById('gachaSubtitle');
+  const card=document.getElementById('gachaResultCard');
+  const closeBtn=document.getElementById('gachaCloseBtn');
+  const tierInfo={common:{emoji:'🥚', name:'Telur Biasa', desc:'70% — Aura Hijau', cls:'bg-emerald-100 text-emerald-700 border-emerald-200', aura:'gacha-aura-common', bg:'bg-emerald-50'}, rare:{emoji:'🍀🥚', name:'Telur Keberuntungan', desc:'25% — Aura Biru Langka!', cls:'bg-sky-100 text-sky-700 border-sky-200', aura:'gacha-aura-rare', bg:'bg-sky-50'}, legend:{emoji:'👑🥚', name:'Telur Legenda', desc:'5% — Aura Emas Legendaris! ✨', cls:'bg-amber-100 text-amber-700 border-amber-300', aura:'gacha-aura-legend', bg:'bg-amber-50'}};
+  const info=tierInfo[tier];
+  aura.className='w-32 h-32 mx-auto rounded-[28px] flex items-center justify-center text-5xl relative border-4 '+info.cls+' '+info.aura+' '+info.bg;
+  emoji.textContent=info.emoji;
+  emoji.className='text-6xl';
+  if(tier==='legend'){ aura.style.transform='scale(1.05)'; spawnConfetti(50); playWin(); vibrate([80,40,80,40,120]); }
+  else if(tier==='rare'){ spawnConfetti(25); playPop(); vibrate(40); }
+  else { spawnConfetti(15); playPop(); vibrate(20); }
+  title.textContent=info.name+'!';
+  sub.textContent=info.desc;
+  document.getElementById('gachaResultTier').textContent=info.name.toUpperCase() + (tier==='legend'?' ✨':tier==='rare'?' ★':'');
+  document.getElementById('gachaResultTier').className='inline-flex text-[11px] font-black tracking-widest px-3 py-1 rounded-full border '+info.cls;
+  document.getElementById('gachaResultName').textContent=info.name;
+  document.getElementById('gachaResultDesc').textContent=info.desc + ' — Tantangan: Legend hanya 5%!';
+  card.classList.remove('hidden');
+  closeBtn.classList.remove('hidden');
+  closeBtn.textContent= tier==='legend' ? 'WOW LEGENDA! 🎉' : tier==='rare' ? 'Langka! ✨' : 'Lumayan! 👍';
+}
+function showMultiGachaResult(results){
+  const aura=document.getElementById('gachaAura');
+  const emoji=document.getElementById('gachaEmoji');
+  const title=document.getElementById('gachaTitle');
+  const sub=document.getElementById('gachaSubtitle');
+  const card=document.getElementById('gachaResultCard');
+  const closeBtn=document.getElementById('gachaCloseBtn');
+  const counts={common:0, rare:0, legend:0};
+  results.forEach(r=>counts[r]++);
+  const hasLegend=counts.legend>0;
+  const hasRare=counts.rare>0;
+  let tier='common';
+  if(hasLegend) tier='legend';
+  else if(hasRare) tier='rare';
+  const tierInfo={common:{cls:'bg-emerald-100 text-emerald-700 border-emerald-200', aura:'gacha-aura-common', bg:'bg-emerald-50'}, rare:{cls:'bg-sky-100 text-sky-700 border-sky-200', aura:'gacha-aura-rare', bg:'bg-sky-50'}, legend:{cls:'bg-amber-100 text-amber-700 border-amber-300', aura:'gacha-aura-legend', bg:'bg-amber-50'}};
+  const info=tierInfo[tier];
+  aura.className='w-32 h-32 mx-auto rounded-[28px] flex items-center justify-center text-5xl relative border-4 '+info.cls+' '+info.aura+' '+info.bg;
+  emoji.textContent='🎉';
+  emoji.className='text-6xl';
+  if(hasLegend){ spawnConfetti(60); playWin(); vibrate([80,40,80,40,120]); } else { spawnConfetti(30); playPop(); }
+  title.textContent='Gacha 10x Selesai!';
+  sub.textContent=`Dapat: ${counts.common} Biasa • ${counts.rare} Langka • ${counts.legend} Legenda`;
+  document.getElementById('gachaResultTier').textContent=`HASIL 10x`;
+  document.getElementById('gachaResultTier').className='inline-flex text-[11px] font-black tracking-widest px-3 py-1 rounded-full border '+info.cls;
+  document.getElementById('gachaResultName').innerHTML=`<span class="text-emerald-600">${counts.common} 🥚 Biasa</span> • <span class="text-sky-600">${counts.rare} 🍀 Langka</span> • <span class="text-amber-600">${counts.legend} 👑 Legend</span>`;
+  document.getElementById('gachaResultDesc').textContent= hasLegend ? 'WOW! Dapat Legend 5%! Aura emas!' : hasRare ? 'Mantap! Dapat Langka!' : 'Semangat! Coba lagi untuk Legend!';
+  card.classList.remove('hidden');
+  closeBtn.classList.remove('hidden');
+  closeBtn.textContent='Keren! ✨';
+}
+window.closeGachaModal=()=> document.getElementById('gachaModal').classList.add('hidden');
+
+// ---------- END GACHA ----------
+
 
 // Tab
 window.switchTab=(tab)=>{
@@ -1326,7 +1648,7 @@ window.openStudy=(isArena)=>{
         playPop(); vibrate(50);
         setTimeout(()=>{ closeStudy(); handleBuff(true,false); },700);
       } else {
-        state.meat+=1; state.energy+=1; state.eggs.forEach(e=>{ if(e.progress<e.max) e.progress=Math.min(e.max,e.progress+1); }); saveState(); renderAll();
+        state.meat+=1; state.energy+=1; state.eggs.forEach(e=>{ if(e.progress<e.max) e.progress=Math.min(e.max,e.progress+1); }); updateMissionProgress('study',1); saveState(); renderAll();
         document.getElementById('studyFeedback').className='mt-3 rounded-2xl p-3 text-center font-black bg-emerald-50 border-2 border-emerald-200 text-emerald-700';
         document.getElementById('studyFeedback').innerHTML='🎉 BENAR! +1 🍖 +1 ⚡ untuk semua telur!';
         playPop(); spawnConfetti(14); vibrate([30,40,30]); showToast('✅ +1 🍖 +1 ⚡','bg-emerald-600');
@@ -1359,7 +1681,9 @@ function startStudyTimer(){
 // Hatch
 window.hatchEgg=(eggId)=>{
   const idx=state.eggs.findIndex(e=>e.id===eggId); if(idx===-1) return; const egg=state.eggs[idx]; if(egg.progress<egg.max) return;
-  const tier=pickTier(egg.type); const monster=randomMonster(tier); state.eggs.splice(idx,1); state.monsters.unshift(monster); state.stats.hatched+=1; saveState(); renderAll(); showHatchReveal(monster, egg.type);
+  // gachaTier override if exists
+  let tierToUse = egg.gachaTier || pickTier(egg.type);
+  const monster=randomMonster(tierToUse); state.eggs.splice(idx,1); state.monsters.unshift(monster); state.stats.hatched+=1; updateMissionProgress('hatch',1); saveState(); renderAll(); showHatchReveal(monster, egg.type);
 }
 function showHatchReveal(monster, eggType){
   const modal=document.getElementById('hatchModal');
@@ -1408,6 +1732,7 @@ window.feedMonster=(monsterId)=>{
     showToast(`${emoji} ${m.name} +1 ${chosen.toUpperCase()}! (${m.stats[chosen]}/12)`,'bg-emerald-600');
     spawnConfetti(10);
   }
+  updateMissionProgress('feed',1);
   saveState(); renderAll();
 }
 
@@ -1607,6 +1932,7 @@ function finishRace(){
   if(playerRank===1 && (raceState.player.stars||0)>=1) reward+=2;
   if(playerRank===1 && raceState.player.tier==='legend') reward+=2;
   state.diamonds+=reward; state.stats.races+=1; if(playerRank===1) state.stats.wins+=1; state.stats.piala=(state.stats.piala||0)+piala;
+  if(playerRank===1) updateMissionProgress('raceWin',1);
   saveState(); updateResources();
   const resultEl=document.getElementById('arenaResult');
   resultEl.classList.remove('hidden');
@@ -1900,6 +2226,7 @@ function finishDuel(menang){
   let piala = menang?3:0;
   if(duelState.ronde<=7 && menang) { reward+=5; piala+=1; }
   state.diamonds+=reward; state.stats.races+=1; if(menang) state.stats.wins+=1; state.stats.piala=(state.stats.piala||0)+piala;
+  if(menang) updateMissionProgress('duelWin',1);
   saveState(); updateResources();
   const resultEl=document.getElementById('arenaResult');
   resultEl.classList.remove('hidden');
@@ -2147,7 +2474,7 @@ window.resetGame=()=>{
     saveState(); renderAll(); switchTab('penetasan'); showToast('🔄 Game di-reset!','bg-slate-800'); arenaBattle=null; arenaSelection=null; vibrate(50);
   }
 }
-loadState(); renderAll(); switchTab('penetasan'); updateResources();
+loadState(); initDailyMissions(); renderAll(); switchTab('penetasan'); updateResources();
 setTimeout(()=>{ if(firebaseReady) muatPeringkat(); }, 1200);
 window.getMonsterImg=getMonsterImg; window.getEggImg=getEggImg;
 </script>
