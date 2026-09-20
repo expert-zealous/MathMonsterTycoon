@@ -10,6 +10,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
 <title>Math Monster Tycoon 🧮👾</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="shortcut icon" href="assets/logo.png">
 <link id="manifestLink" rel="manifest" href="">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -181,7 +184,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
       <div>
         <div class="flex items-center justify-between mb-3">
           <h3 class="font-black text-slate-800 flex items-center gap-2"><span class="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center">🥚</span> Inkubator</h3>
-          <span class="text-xs font-bold bg-violet-100 text-violet-700 px-3 py-1 rounded-full">BELAJAR = +1 ⚡</span>
+          <button onclick="openStudy(false)" class="bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white font-black text-xs px-4 py-2 rounded-full shadow flex items-center gap-1.5 btn-native btn-3d border-2 border-white"><span class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-xs">📚</span> BELAJAR <span class="bg-white/20 px-2 py-0.5 rounded-full text-[10px]">+1 ⚡ +1 🍖</span></button>
         </div>
         <div id="eggGrid" class="grid grid-cols-1 gap-3"></div>
         <div id="noEggs" class="hidden bg-white border-2 border-dashed border-amber-200 rounded-[24px] p-6 text-center">
@@ -631,13 +634,21 @@ input, textarea{-webkit-user-select:text; user-select:text}
     </section>
   </main>
 
-  <button id="studyFab" onclick="openStudy(false)" class="fixed bottom-[88px] right-4 z-20 bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white rounded-[24px] shadow-xl shadow-violet-500/30 px-5 py-3.5 flex items-center gap-3 btn-native btn-3d border-2 border-white">
-    <span class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-xl">📚</span>
-    <div class="text-left leading-none pr-1">
-      <div class="font-black text-sm">BELAJAR</div>
-      <div class="text-[11px] font-bold opacity-90">+1 🍖 +1 ⚡</div>
-    </div>
-    <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-sm">✨</span>
+  <div id="studyFabWrap" class="fixed bottom-[88px] left-4 z-20 flex flex-col items-start gap-2" style="touch-action:none">
+    <button id="studyFabHide" onclick="toggleStudyFab(false)" class="w-7 h-7 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs shadow border-2 border-white btn-native" title="Sembunyikan">✕</button>
+    <button id="studyFab" class="bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white rounded-[24px] shadow-xl shadow-violet-500/30 px-5 py-3.5 flex items-center gap-3 btn-native btn-3d border-2 border-white cursor-grab active:cursor-grabbing select-none" style="touch-action:none">
+      <span class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-xl">📚</span>
+      <div class="text-left leading-none pr-1">
+        <div class="font-black text-sm">BELAJAR</div>
+        <div class="text-[11px] font-bold opacity-90">+1 🍖 +1 ⚡</div>
+      </div>
+      <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-sm">✨</span>
+      <span class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-[10px]">⋮⋮</span>
+    </button>
+    <div class="text-[10px] font-bold bg-white/90 text-slate-600 px-2 py-1 rounded-full shadow hidden md:block">Geser ke mana saja • ✕ untuk sembunyikan — atau pakai tombol BELAJAR di atas Inkubator</div>
+  </div>
+  <button id="studyFabShow" onclick="toggleStudyFab(true)" class="fixed bottom-[88px] left-4 z-20 hidden bg-white border-2 border-violet-200 text-violet-700 rounded-full px-4 py-2 shadow flex items-center gap-2 font-black text-xs btn-native">
+    <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center">📚</span> Belajar
   </button>
 
   <nav class="absolute bottom-0 inset-x-0 bg-white/95 glass-nav border-t border-slate-100 px-1 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex justify-around items-center shadow-[0_-8px_24px_rgba(0,0,0,0.06)] z-30 rounded-t-[28px]">
@@ -1151,7 +1162,7 @@ function renderPenetasan(){
             <div class="h-3 bg-slate-100 rounded-full overflow-hidden mt-1 relative"><div class="h-full ${ready?'bg-gradient-to-r from-emerald-400 to-teal-500':'bg-gradient-to-r from-amber-400 to-orange-400'} transition-all duration-500 shimmer" style="width:${pct}%"></div></div>
             <p class="text-[11px] font-medium text-slate-400 mt-1">${ready?'Ketuk TETASKAN untuk kejutan! 🎉':'Jawab soal pilihan ganda untuk isi ⚡'}</p>
           </div>
-          ${ready?`<button onclick="hatchEgg('${egg.id}')" class="mt-2 w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-2.5 rounded-full shadow btn-native btn-3d flex items-center justify-center gap-2">🥚 TETASKAN! ✨</button>`:`<button onclick="openStudy(false)" class="mt-2 w-full bg-slate-900 text-white font-black py-2.5 rounded-full btn-native btn-3d flex items-center justify-center gap-2">📚 BELAJAR +1 ⚡</button>`}
+          ${ready?`<div class="mt-2 flex gap-2"><button onclick="openStudy(false)" class="flex-1 bg-slate-900 text-white font-black py-2.5 rounded-full btn-native flex items-center justify-center gap-1 text-sm">📚 BELAJAR</button><button onclick="hatchEgg('${egg.id}')" class="flex-[1.5] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-2.5 rounded-full shadow btn-native btn-3d flex items-center justify-center gap-1 text-sm">🥚 TETASKAN! ✨</button></div>`:`<button onclick="openStudy(false)" class="mt-2 w-full bg-slate-900 text-white font-black py-2.5 rounded-full btn-native btn-3d flex items-center justify-center gap-2">📚 BELAJAR +1 ⚡</button>`}
         </div>`;
       grid.appendChild(card);
     });
@@ -1429,7 +1440,7 @@ function renderDailyMissions(){
     list.appendChild(bonus);
   }
 }
-function claimMission(id){
+window.claimMission=(id)=>{
   const def=DAILY_MISSIONS_DEF.find(x=>x.id===id);
   if(!def) return;
   const prog=state.daily.progress[id]||0;
@@ -2474,6 +2485,99 @@ window.resetGame=()=>{
     saveState(); renderAll(); switchTab('penetasan'); showToast('🔄 Game di-reset!','bg-slate-800'); arenaBattle=null; arenaSelection=null; vibrate(50);
   }
 }
+// ---------- Study FAB Draggable & Hideable ----------
+window.toggleStudyFab=(show)=>{
+  const wrap=document.getElementById('studyFabWrap');
+  const showBtn=document.getElementById('studyFabShow');
+  if(show){
+    wrap.classList.remove('hidden');
+    showBtn.classList.add('hidden');
+    localStorage.setItem('mmt_studyFab_hidden','0');
+  } else {
+    wrap.classList.add('hidden');
+    showBtn.classList.remove('hidden');
+    localStorage.setItem('mmt_studyFab_hidden','1');
+  }
+  vibrate(20);
+};
+(function initStudyFab(){
+  const fab=document.getElementById('studyFab');
+  const wrap=document.getElementById('studyFabWrap');
+  if(!fab||!wrap) return;
+  // restore hidden state
+  if(localStorage.getItem('mmt_studyFab_hidden')==='1'){
+    wrap.classList.add('hidden');
+    document.getElementById('studyFabShow').classList.remove('hidden');
+  }
+  // restore position
+  const savedX=localStorage.getItem('mmt_studyFab_x');
+  const savedY=localStorage.getItem('mmt_studyFab_y');
+  if(savedX&&savedY){
+    wrap.style.right='auto';
+    wrap.style.bottom='auto';
+    wrap.style.left=savedX;
+    wrap.style.top=savedY;
+  }
+  let isDragging=false, hasDragged=false, startX=0, startY=0, origX=0, origY=0;
+  function getPos(e){
+    const t=e.touches? e.touches[0] : e;
+    return {x:t.clientX, y:t.clientY};
+  }
+  function onStart(e){
+    const p=getPos(e);
+    isDragging=true; hasDragged=false;
+    startX=p.x; startY=p.y;
+    const rect=wrap.getBoundingClientRect();
+    origX=rect.left; origY=rect.top;
+    fab.style.transition='none';
+    // Force convert from Tailwind right/bottom to left/top so horizontal drag works
+    wrap.style.left=rect.left+'px';
+    wrap.style.top=rect.top+'px';
+    wrap.style.right='auto';
+    wrap.style.bottom='auto';
+    if(e.cancelable) e.preventDefault();
+  }
+  function onMove(e){
+    if(!isDragging) return;
+    const p=getPos(e);
+    const dx=p.x-startX, dy=p.y-startY;
+    if(Math.abs(dx)>5||Math.abs(dy)>5) hasDragged=true;
+    if(hasDragged){
+      const newLeft=origX+dx;
+      const newTop=origY+dy;
+      // keep inside viewport
+      const maxX=window.innerWidth - wrap.offsetWidth - 8;
+      const maxY=window.innerHeight - wrap.offsetHeight - 8;
+      wrap.style.left=Math.max(8, Math.min(maxX, newLeft))+'px';
+      wrap.style.top=Math.max(8, Math.min(maxY, newTop))+'px';
+    }
+  }
+  function onEnd(e){
+    if(!isDragging) return;
+    isDragging=false;
+    fab.style.transition='';
+    if(hasDragged){
+      // save position
+      localStorage.setItem('mmt_studyFab_x', wrap.style.left);
+      localStorage.setItem('mmt_studyFab_y', wrap.style.top);
+      setTimeout(()=>hasDragged=false,100);
+    } else {
+      // click without drag -> open study
+      openStudy(false);
+    }
+  }
+  fab.addEventListener('mousedown', onStart);
+  fab.addEventListener('touchstart', onStart, {passive:false});
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, {passive:false});
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+  // also click fallback if not dragged (for accessibility)
+  fab.addEventListener('click', (e)=>{
+    if(hasDragged){ e.preventDefault(); e.stopPropagation(); }
+  });
+})();
+
 loadState(); initDailyMissions(); renderAll(); switchTab('penetasan'); updateResources();
 setTimeout(()=>{ if(firebaseReady) muatPeringkat(); }, 1200);
 window.getMonsterImg=getMonsterImg; window.getEggImg=getEggImg;
