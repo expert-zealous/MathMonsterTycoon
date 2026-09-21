@@ -13,7 +13,7 @@
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
 <link rel="shortcut icon" href="assets/logo.png">
-<link id="manifestLink" rel="manifest" href="">
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -127,6 +127,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
         <span class="text-xs font-bold opacity-90">Pemain:</span>
       </div>
       <span id="playerNameDisplay" class="font-black text-sm bg-white text-violet-700 px-3 py-1 rounded-full">Pemain Baru</span>
+      <button onclick="tryInstallPWA()" class="ml-2 bg-white/20 backdrop-blur border border-white/30 text-white font-black text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 btn-native" title="Install ke HP">📲 Install</button>
     </div>
     <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
     <div class="grid grid-cols-3 gap-2 mt-3">
@@ -157,8 +158,8 @@ input, textarea{-webkit-user-select:text; user-select:text}
       <span class="flex items-center gap-1 text-xs font-bold bg-white text-violet-700 px-3 py-1 rounded-full">🎁 Klaim →</span>
     </button>
     <div class="mt-1.5 flex items-center gap-1.5 text-[11px] font-bold opacity-90">
-      <span class="bg-white/20 px-2 py-0.5 rounded-full">⚡ Energi: untuk menetaskan telur</span>
-      <span class="bg-white/20 px-2 py-0.5 rounded-full">📚 Belajar = +1 ⚡ +1 🍖</span>
+      <span class="bg-white/20 px-2 py-0.5 rounded-full">🥚 TETAS: 📚 per telur +1</span>
+      <span class="bg-white/20 px-2 py-0.5 rounded-full">📚 BELAJAR tab: +1 🍖 +1 ⚡</span>
     </div>
   </header>
 
@@ -184,7 +185,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
       <div>
         <div class="flex items-center justify-between mb-3">
           <h3 class="font-black text-slate-800 flex items-center gap-2"><span class="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center">🥚</span> Inkubator</h3>
-          <button onclick="openStudy(false)" class="bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white font-black text-xs px-4 py-2 rounded-full shadow flex items-center gap-1.5 btn-native btn-3d border-2 border-white"><span class="w-6 h-6 bg-white rounded-full flex items-center justify-center text-xs">📚</span> BELAJAR <span class="bg-white/20 px-2 py-0.5 rounded-full text-[10px]">+1 ⚡ +1 🍖</span></button>
+          <span class="text-xs font-bold bg-amber-100 text-amber-700 px-3 py-1 rounded-full">5 langkah → menetas</span>
         </div>
         <div id="eggGrid" class="grid grid-cols-1 gap-3"></div>
         <div id="noEggs" class="hidden bg-white border-2 border-dashed border-amber-200 rounded-[24px] p-6 text-center">
@@ -234,9 +235,56 @@ input, textarea{-webkit-user-select:text; user-select:text}
       <div class="bg-gradient-to-br from-sky-500 to-cyan-500 rounded-2xl p-3 flex gap-3 items-start text-white shadow">
         <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-xl shrink-0">⚡</div>
         <div class="text-sm">
-          <p class="font-black">Energi ⚡ untuk apa?</p>
-          <p class="font-medium leading-tight opacity-95">⚡ dipakai untuk <b>mengisi progress telur</b> di Inkubator (1 ⚡ = 1 progress, butuh 5). Dapatkan ⚡ gratis via <b>📚 Belajar (jawab benar +1 ⚡)</b> & <b>🎯 Misi Harian</b>! Jangan lupa klaim tiap hari!</p>
+          <p class="font-black">Sistem Baru — Belajar Terpisah!</p>
+          <p class="font-medium leading-tight opacity-95">🥚 Mau menetas? Klik <b>📚 BELAJAR pada telur</b> — hanya telur itu +1 (tidak ganggu telur lain)! Mau farm <b>🍖 & ⚡</b>? Buka tab <b>📚 BELAJAR</b> di bawah — jawab benar +1 🍖 +1 ⚡!</p>
         </div>
+      </div>
+    </section>
+
+    <!-- BELAJAR (Farming Daging & Energi — tidak ganggu telur) -->
+    <section id="screen-belajar" class="hidden p-4 space-y-4">
+      <div class="bg-gradient-to-br from-violet-600 via-fuchsia-500 to-pink-500 rounded-[28px] p-4 text-white relative overflow-hidden shadow-lg">
+        <div class="absolute -right-6 -top-6 text-[110px] opacity-20 rotate-12 select-none">📚</div>
+        <div class="relative">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur rounded-full px-3 py-1 text-xs font-black tracking-widest">📚 PUSAT BELAJAR</div>
+          <h2 class="font-baloo font-extrabold text-2xl mt-2 leading-none">Belajar Dapat Hadiah!</h2>
+          <p class="text-sm font-medium opacity-95 mt-1 pr-8">Jawab soal pilihan ganda — benar dapat <b>+1 🍖 +1 ⚡</b> untuk dipakai makan & penetasan. <b>Tidak menambah progress telur</b>, jadi telur tetap harus klik <b>BELAJAR pada telur</b> masing-masing.</p>
+          <div class="grid grid-cols-2 gap-2 mt-3">
+            <div class="bg-white rounded-2xl px-3 py-2 flex items-center gap-2 shadow">
+              <span class="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center">🍖</span>
+              <div><div class="text-[11px] font-bold text-orange-600 uppercase leading-none">Daging</div><div id="farmMeatCount" class="font-black text-slate-800 text-lg leading-none">0</div></div>
+            </div>
+            <div class="bg-white rounded-2xl px-3 py-2 flex items-center gap-2 shadow">
+              <span class="w-8 h-8 bg-sky-100 rounded-xl flex items-center justify-center">⚡</span>
+              <div><div class="text-[11px] font-bold text-sky-600 uppercase leading-none">Energi</div><div id="farmEnergyCount" class="font-black text-slate-800 text-lg leading-none">0</div></div>
+            </div>
+          </div>
+          <div class="mt-3 bg-white/15 backdrop-blur rounded-2xl px-3 py-2 flex items-center justify-between text-xs font-bold">
+            <span>🔥 Streak: <b id="farmStreak">0</b></span>
+            <span>✅ Benar: <b id="farmCorrect">0</b></span>
+            <span>📚 Misi: <b id="farmMissionProg">0/5</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-[24px] p-4 shadow-md border-2 border-violet-100">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-black text-slate-800 flex items-center gap-2"><span class="w-8 h-8 bg-violet-100 rounded-xl flex items-center justify-center">🧮</span> Soal Pilihan Ganda</h3>
+          <span id="farmLevel" class="text-xs font-bold bg-slate-900 text-white px-3 py-1 rounded-full">Level SMP</span>
+        </div>
+        <div class="bg-slate-50 rounded-[20px] p-5 text-center border-2 border-slate-100">
+          <div class="text-xs font-black tracking-widest text-violet-600 mb-2">PILIH JAWABAN BENAR</div>
+          <div id="farmQuestion" class="font-black text-3xl text-slate-800 tracking-tight">12 × 7 = ?</div>
+        </div>
+        <div id="farmOptions" class="grid grid-cols-2 gap-2 mt-4"></div>
+        <div id="farmFeedback" class="hidden mt-3 rounded-2xl p-3 text-center font-black"></div>
+        <div class="mt-3 bg-emerald-50 border-2 border-emerald-100 rounded-2xl p-3 flex gap-2 items-start">
+          <span class="text-xl">💡</span><span class="text-xs font-bold text-emerald-800 leading-tight">Tips: Farming di sini <b>hanya</b> untuk 🍖 & ⚡. Untuk menetaskan telur, klik <b>📚 BELAJAR pada telur</b> di tab TETAS — tiap telur progress sendiri-sendiri, tidak ganggu telur lain!</span>
+        </div>
+      </div>
+      <div class="bg-amber-50 border-2 border-amber-100 rounded-2xl p-3 flex gap-2 items-center">
+        <span class="text-2xl">🎯</span>
+        <div class="flex-1"><p class="font-black text-amber-800 text-sm">Misi Harian: Rajin Belajar</p><p class="text-xs font-medium text-amber-700">Jawab 5 benar di menu BELAJAR / telur untuk klaim hadiah!</p></div>
+        <button onclick="openDailyMissions()" class="bg-amber-500 text-white font-black px-4 py-2 rounded-full text-xs btn-native">🎁 Klaim</button>
       </div>
     </section>
 
@@ -489,7 +537,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
               </div>
             </div>
             <div id="duelLog" class="bg-black/30 rounded-xl p-2.5 text-xs font-bold text-white/90 min-h-[44px] flex items-center justify-center text-center">
-              Duel Skill! Tap tombol skill 1-2-3 — ada cooldown! Efek sesuai karakter!
+              Duel! Tap skill 1-2-3 — lawan tidak tahu skill mana yang kamu pakai! 💥
             </div>
           </div>
           <div id="duelSkillBar" class="mt-3 bg-white rounded-2xl p-3 shadow-lg">
@@ -634,37 +682,24 @@ input, textarea{-webkit-user-select:text; user-select:text}
     </section>
   </main>
 
-  <div id="studyFabWrap" class="fixed bottom-[88px] left-4 z-20 flex flex-col items-start gap-2" style="touch-action:none">
-    <button id="studyFabHide" onclick="toggleStudyFab(false)" class="w-7 h-7 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs shadow border-2 border-white btn-native" title="Sembunyikan">✕</button>
-    <button id="studyFab" class="bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white rounded-[24px] shadow-xl shadow-violet-500/30 px-5 py-3.5 flex items-center gap-3 btn-native btn-3d border-2 border-white cursor-grab active:cursor-grabbing select-none" style="touch-action:none">
-      <span class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-xl">📚</span>
-      <div class="text-left leading-none pr-1">
-        <div class="font-black text-sm">BELAJAR</div>
-        <div class="text-[11px] font-bold opacity-90">+1 🍖 +1 ⚡</div>
-      </div>
-      <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-sm">✨</span>
-      <span class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-[10px]">⋮⋮</span>
-    </button>
-    <div class="text-[10px] font-bold bg-white/90 text-slate-600 px-2 py-1 rounded-full shadow hidden md:block">Geser ke mana saja • ✕ untuk sembunyikan — atau pakai tombol BELAJAR di atas Inkubator</div>
-  </div>
-  <button id="studyFabShow" onclick="toggleStudyFab(true)" class="fixed bottom-[88px] left-4 z-20 hidden bg-white border-2 border-violet-200 text-violet-700 rounded-full px-4 py-2 shadow flex items-center gap-2 font-black text-xs btn-native">
-    <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center">📚</span> Belajar
-  </button>
-
-  <nav class="absolute bottom-0 inset-x-0 bg-white/95 glass-nav border-t border-slate-100 px-1 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex justify-around items-center shadow-[0_-8px_24px_rgba(0,0,0,0.06)] z-30 rounded-t-[28px]">
-    <button id="tab-penetasan" onclick="switchTab('penetasan')" class="flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl bg-violet-600 text-white shadow-md btn-native">
+  
+  <nav class="absolute bottom-0 inset-x-0 bg-white/95 glass-nav border-t border-slate-100 px-1 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex justify-between items-center gap-0.5 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] z-30 rounded-t-[28px]">
+    <button id="tab-penetasan" onclick="switchTab('penetasan')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl bg-violet-600 text-white shadow-md btn-native">
       <span class="text-lg leading-none">🥚</span><span class="text-[10px] font-black tracking-wide">TETAS</span>
     </button>
-    <button id="tab-makan" onclick="switchTab('makan')" class="flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl text-slate-400 btn-native">
+    <button id="tab-belajar" onclick="switchTab('belajar')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
+      <span class="text-lg leading-none">📚</span><span class="text-[10px] font-black tracking-wide">BELAJAR</span>
+    </button>
+    <button id="tab-makan" onclick="switchTab('makan')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
       <span class="text-lg leading-none">🍖</span><span class="text-[10px] font-black tracking-wide">MAKAN</span>
     </button>
-    <button id="tab-arena" onclick="switchTab('arena')" class="flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl text-slate-400 btn-native">
+    <button id="tab-arena" onclick="switchTab('arena')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
       <span class="text-lg leading-none">🏟️</span><span class="text-[10px] font-black tracking-wide">ARENA</span>
     </button>
-    <button id="tab-toko" onclick="switchTab('toko')" class="flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl text-slate-400 btn-native">
+    <button id="tab-toko" onclick="switchTab('toko')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
       <span class="text-lg leading-none">🛍️</span><span class="text-[10px] font-black tracking-wide">TOKO</span>
     </button>
-    <button id="tab-peringkat" onclick="switchTab('peringkat')" class="flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl text-slate-400 btn-native">
+    <button id="tab-peringkat" onclick="switchTab('peringkat')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
       <span class="text-lg leading-none">🏆</span><span class="text-[10px] font-black tracking-wide">RANK</span>
     </button>
   </nav>
@@ -859,32 +894,18 @@ let initializeApp, getFirestore, collection, doc, setDoc, getDoc, getDocs, query
 })();
 window._db=db; window._auth=auth;
 
-// PWA
-(function setupPWA(){
-  const manifest = {
-    name: "Math Monster Tycoon",
-    short_name: "MonsterTycoon",
-    description: "Belajar matematika seru dengan monster lucu - 28 karakter!",
-    start_url: ".",
-    display: "standalone",
-    background_color: "#fff7ed",
-    theme_color: "#7c3aed",
-    orientation: "portrait",
-    icons: [
-      {src: "assets/logo.png", sizes:"192x192", type:"image/png"},
-      {src: "assets/logo.png", sizes:"512x512", type:"image/png"}
-    ]
-  };
-  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  document.getElementById('manifestLink').href = url;
-  if('serviceWorker' in navigator){
-    const swCode = `const CACHE='mmt-v4'; self.addEventListener('install',e=>self.skipWaiting()); self.addEventListener('activate',e=>self.clients.claim()); self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
-    const swBlob = new Blob([swCode], {type:'text/javascript'});
-    const swUrl = URL.createObjectURL(swBlob);
-    navigator.serviceWorker.register(swUrl).catch(()=>{});
-  }
-})();
+// PWA — manifest.json + sw.js (installable)
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').then(()=>console.log('SW registered')).catch(e=>console.warn('SW fail',e));
+  });
+}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; console.log('PWA install prompt ready'); showToast('📲 Bisa Install ke HP! Tap ⋮ → Install App','bg-violet-600'); });
+window.tryInstallPWA=()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(c=>{ if(c.outcome==='accepted') showToast('✅ Instalasi dimulai!','bg-emerald-600'); deferredPrompt=null; }); }
+  else showToast('ℹ️ Buka di Chrome → ⋮ → Tambahkan ke Layar Utama / Install App','bg-slate-800');
+};
 
 // SPLASH
 setTimeout(()=>{
@@ -1066,6 +1087,50 @@ window.handleAvatarUpload=(event)=>{
 function playBuzz(){ try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='square'; o.frequency.value=180; g.gain.value=0.2; o.connect(g); g.connect(ctx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+0.35); o.stop(ctx.currentTime+0.35);}catch(e){} }
 function playPop(){ try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.value=650; g.gain.value=0.3; o.connect(g); g.connect(ctx.destination); o.start(); o.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime+0.12); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+0.18); o.stop(ctx.currentTime+0.18);}catch(e){} }
 function playWin(){ try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); [523,659,784,1046].forEach((f,i)=>{ const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.value=0.22; o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime+i*0.11); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+i*0.11+0.28); o.stop(ctx.currentTime+i*0.11+0.28);});}catch(e){} }
+function playSkillExplosion(level){
+  try{
+    const AudioCtx = window.AudioContext||window.webkitAudioContext;
+    const ctx=new AudioCtx();
+    const now=ctx.currentTime;
+    const intensity = level===3?1.2: level===2?0.9:0.6;
+    // Low boom
+    const o1=ctx.createOscillator(); o1.type='square';
+    const g1=ctx.createGain();
+    o1.frequency.setValueAtTime(140+level*30, now);
+    o1.frequency.exponentialRampToValueAtTime(35, now+0.35+intensity*0.1);
+    g1.gain.setValueAtTime(0.7*intensity, now);
+    g1.gain.exponentialRampToValueAtTime(0.01, now+0.5);
+    const f1=ctx.createBiquadFilter(); f1.type='lowpass'; f1.frequency.value=900;
+    o1.connect(f1); f1.connect(g1); g1.connect(ctx.destination); o1.start(now); o1.stop(now+0.55);
+    // Mid crack
+    const o2=ctx.createOscillator(); o2.type='sawtooth';
+    const g2=ctx.createGain();
+    o2.frequency.setValueAtTime(900+level*250, now);
+    o2.frequency.exponentialRampToValueAtTime(180, now+0.22);
+    g2.gain.setValueAtTime(0.35*intensity, now);
+    g2.gain.exponentialRampToValueAtTime(0.01, now+0.32);
+    o2.connect(g2); g2.connect(ctx.destination); o2.start(now); o2.stop(now+0.35);
+    // High sparkle for ultimate
+    if(level===3){
+      const o3=ctx.createOscillator(); o3.type='sine';
+      const g3=ctx.createGain();
+      o3.frequency.setValueAtTime(1200, now+0.05);
+      o3.frequency.exponentialRampToValueAtTime(2200, now+0.25);
+      g3.gain.setValueAtTime(0.25, now+0.05);
+      g3.gain.exponentialRampToValueAtTime(0.01, now+0.35);
+      o3.connect(g3); g3.connect(ctx.destination); o3.start(now+0.05); o3.stop(now+0.4);
+    }
+    // Noise burst via buffer
+    const bufferSize=Math.floor(ctx.sampleRate*0.35);
+    const buffer=ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data=buffer.getChannelData(0);
+    for(let i=0;i<bufferSize;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/bufferSize,2)*0.9;
+    const noise=ctx.createBufferSource(); noise.buffer=buffer;
+    const ng=ctx.createGain(); ng.gain.setValueAtTime(0.5*intensity, now); ng.gain.exponentialRampToValueAtTime(0.01, now+0.45);
+    const nf=ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=1200; nf.Q.value=0.7;
+    noise.connect(nf); nf.connect(ng); ng.connect(ctx.destination); noise.start(now);
+  }catch(e){}
+}
 function showToast(msg, color='bg-slate-900'){ const el=document.getElementById('toast'); const inner=document.getElementById('toastInner'); inner.className=`px-5 py-3 rounded-full shadow-xl flex items-center gap-2 text-sm font-black whitespace-nowrap ${color} text-white`; inner.innerHTML=msg; el.classList.remove('hidden'); el.animate([{transform:'translate(-50%, -10px)',opacity:0},{transform:'translate(-50%,0)',opacity:1}],{duration:300}); setTimeout(()=>el.classList.add('hidden'),2400); }
 function spawnConfetti(n=30){ const c=document.getElementById('confetti'); c.innerHTML=''; const colors=['#f59e0b','#ec4899','#8b5cf6','#06b6d4','#10b981','#f97316']; const emojis=['🎉','✨','🎊','💥','⭐','🌟']; for(let i=0;i<n;i++){ const d=document.createElement('div'); d.style.position='absolute'; d.style.left=Math.random()*100+'vw'; d.style.top='-10px'; d.style.fontSize=(14+Math.random()*16)+'px'; d.style.animation=`confettiFall ${1.2+Math.random()*1.5}s linear forwards`; d.style.animationDelay=(Math.random()*0.3)+'s'; if(Math.random()<0.5){ d.style.width='10px'; d.style.height='10px'; d.style.background=colors[Math.floor(Math.random()*colors.length)]; d.style.borderRadius=Math.random()<0.5?'50%':'4px'; } else d.textContent=emojis[Math.floor(Math.random()*emojis.length)]; c.appendChild(d);} setTimeout(()=>c.innerHTML='',3000); }
 
@@ -1127,6 +1192,9 @@ function updateResources(){
   document.getElementById('rankMyMenang').textContent=state.stats.wins||0;
   const totalChars = POOL.common.length + POOL.rare.length + POOL.legend.length;
   document.getElementById('monsterCountDetail').textContent= totalChars + ' Karakter';
+  const fm2=document.getElementById('farmMeatCount'); if(fm2) fm2.textContent=state.meat;
+  const fe2=document.getElementById('farmEnergyCount'); if(fe2) fe2.textContent=state.energy;
+  const fp=document.getElementById('farmMissionProg'); if(fp && state.daily) fp.textContent=(state.daily.progress['study']||0)+'/5';
 }
 
 window.filterTier=(t)=>{
@@ -1160,9 +1228,9 @@ function renderPenetasan(){
           <div class="mt-2">
             <div class="flex justify-between text-[11px] font-black"><span class="${ready?'text-emerald-600':'text-slate-500'}">${egg.progress}/${egg.max} energi</span><span class="${ready?'text-emerald-600':'text-slate-400'}">${pct}%</span></div>
             <div class="h-3 bg-slate-100 rounded-full overflow-hidden mt-1 relative"><div class="h-full ${ready?'bg-gradient-to-r from-emerald-400 to-teal-500':'bg-gradient-to-r from-amber-400 to-orange-400'} transition-all duration-500 shimmer" style="width:${pct}%"></div></div>
-            <p class="text-[11px] font-medium text-slate-400 mt-1">${ready?'Ketuk TETASKAN untuk kejutan! 🎉':'Jawab soal pilihan ganda untuk isi ⚡'}</p>
+            <p class="text-[11px] font-medium text-slate-400 mt-1">${ready?'Ketuk TETASKAN untuk kejutan! 🎉':'Jawab benar → hanya telur ini +1 (tidak ganggu telur lain)'}</p>
           </div>
-          ${ready?`<div class="mt-2 flex gap-2"><button onclick="openStudy(false)" class="flex-1 bg-slate-900 text-white font-black py-2.5 rounded-full btn-native flex items-center justify-center gap-1 text-sm">📚 BELAJAR</button><button onclick="hatchEgg('${egg.id}')" class="flex-[1.5] bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-2.5 rounded-full shadow btn-native btn-3d flex items-center justify-center gap-1 text-sm">🥚 TETASKAN! ✨</button></div>`:`<button onclick="openStudy(false)" class="mt-2 w-full bg-slate-900 text-white font-black py-2.5 rounded-full btn-native btn-3d flex items-center justify-center gap-2">📚 BELAJAR +1 ⚡</button>`}
+          ${ready?`<button onclick="hatchEgg('${egg.id}')" class="mt-2 w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-2.5 rounded-full shadow btn-native btn-3d flex items-center justify-center gap-2">🥚 TETASKAN! ✨</button>`:`<button onclick="openStudy('egg','${egg.id}')" class="mt-2 w-full bg-slate-900 text-white font-black py-2.5 rounded-full btn-native btn-3d flex items-center justify-center gap-2">📚 BELAJAR (Telur ini +1)</button>`}
         </div>`;
       grid.appendChild(card);
     });
@@ -1608,14 +1676,17 @@ window.closeGachaModal=()=> document.getElementById('gachaModal').classList.add(
 // Tab
 window.switchTab=(tab)=>{
   currentTab=tab;
-  ['penetasan','makan','arena','toko','peringkat'].forEach(t=>{
-    document.getElementById('screen-'+t).classList.toggle('hidden', t!==tab);
+  ['penetasan','belajar','makan','arena','toko','peringkat'].forEach(t=>{
+    const scr=document.getElementById('screen-'+t);
+    if(scr) scr.classList.toggle('hidden', t!==tab);
     const btn=document.getElementById('tab-'+t);
-    if(t===tab) btn.className='flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl bg-violet-600 text-white shadow-md btn-native';
-    else btn.className='flex flex-col items-center gap-1 py-1.5 px-2.5 rounded-2xl text-slate-400 btn-native';
+    if(!btn) return;
+    if(t===tab) btn.className='flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl bg-violet-600 text-white shadow-md btn-native';
+    else btn.className='flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native';
   });
   window.scrollTo({top:0, behavior:'smooth'});
   if(tab==='peringkat') muatPeringkat();
+  if(tab==='belajar') initFarm();
   vibrate(20);
 }
 window.setArenaMode=(mode)=>{
@@ -1634,18 +1705,37 @@ window.setOnlineMode=(online)=>{
 }
 
 // ---------- Study Pilihan Ganda ----------
-window.openStudy=(isArena)=>{
-  studyMode=isArena?'arena':'normal';
+let currentEggId=null;
+let farmStreak=0, farmCorrect=0;
+window.openStudy=(mode, eggId)=>{
+  // backward compat: openStudy(false) -> farm? but now egg is per-egg, false means farm? Keep mapping: boolean false => egg? No, old calls false meant normal (all eggs). Now we map false/undefined to 'farm' is wrong because per-egg should be explicit. But for safety handle boolean.
+  if(mode===true || mode==='arena'){ mode='arena'; }
+  else if(mode===false || mode===undefined || mode===null){ mode='farm'; }
+  // mode can be 'egg', 'farm', 'arena'
+  studyMode=mode;
+  currentEggId = eggId || null;
   currentProblem=generateProblem();
   currentOptions=generateOptions(currentProblem.answer, currentProblem.type);
   document.getElementById('studyQuestion').textContent=currentProblem.question;
   document.getElementById('studyLevel').textContent='Level SMP • '+currentProblem.level;
   document.getElementById('studyFeedback').classList.add('hidden');
   document.getElementById('studyModal').classList.remove('hidden');
-  document.getElementById('studyTitle').textContent=isArena?'KESEMPATAN BUFF! 🚀':'Pilih Jawaban Benar!';
-  document.getElementById('studyHeader').className=isArena?'bg-gradient-to-r from-amber-500 to-orange-500 p-4 text-white relative overflow-hidden':'bg-gradient-to-r from-violet-600 to-fuchsia-500 p-4 text-white relative overflow-hidden';
+  if(mode==='arena'){
+    document.getElementById('studyTitle').textContent='KESEMPATAN BUFF! 🚀';
+    document.getElementById('studyHeader').className='bg-gradient-to-r from-amber-500 to-orange-500 p-4 text-white relative overflow-hidden';
+  } else if(mode==='egg'){
+    const egg = state.eggs.find(e=>e.id===currentEggId);
+    const eggName = egg ? EGG_ODDS[egg.type].name : 'Telur';
+    document.getElementById('studyTitle').textContent='Belajar: '+eggName;
+    document.getElementById('studyHeader').className='bg-gradient-to-r from-slate-800 to-slate-900 p-4 text-white relative overflow-hidden';
+    document.getElementById('studyTitle').nextElementSibling.textContent='Benar = hanya telur ini +1 progress (tidak ganggu telur lain)';
+  } else {
+    document.getElementById('studyTitle').textContent='Pilih Jawaban Benar!';
+    document.getElementById('studyHeader').className='bg-gradient-to-r from-violet-600 to-fuchsia-500 p-4 text-white relative overflow-hidden';
+    document.getElementById('studyTitle').nextElementSibling.textContent='Benar = +1 🍖 +1 ⚡ (farming, tidak ganggu telur)';
+  }
   const tw=document.getElementById('studyTimerWrap'); const tt=document.getElementById('studyTimerText');
-  if(isArena){ tw.classList.remove('hidden'); tt.classList.remove('hidden'); startStudyTimer(); } else { tw.classList.add('hidden'); tt.classList.add('hidden'); clearInterval(studyTimer); }
+  if(mode==='arena'){ tw.classList.remove('hidden'); tt.classList.remove('hidden'); startStudyTimer(); } else { tw.classList.add('hidden'); tt.classList.add('hidden'); clearInterval(studyTimer); }
   renderOptions('studyOptions', currentOptions, currentProblem.answer, (val, btn, correct)=>{
     vibrate(30);
     const all=document.querySelectorAll('#studyOptions button');
@@ -1658,21 +1748,33 @@ window.openStudy=(isArena)=>{
         document.getElementById('studyFeedback').innerHTML='✅ BENAR! DAPAT BUFF!';
         playPop(); vibrate(50);
         setTimeout(()=>{ closeStudy(); handleBuff(true,false); },700);
-      } else {
-        state.meat+=1; state.energy+=1; state.eggs.forEach(e=>{ if(e.progress<e.max) e.progress=Math.min(e.max,e.progress+1); }); updateMissionProgress('study',1); saveState(); renderAll();
+      } else if(studyMode==='egg'){
+        const egg = state.eggs.find(e=>e.id===currentEggId);
+        if(egg && egg.progress<egg.max){ egg.progress=Math.min(egg.max, egg.progress+1); }
+        updateMissionProgress('study',1); saveState(); renderAll();
         document.getElementById('studyFeedback').className='mt-3 rounded-2xl p-3 text-center font-black bg-emerald-50 border-2 border-emerald-200 text-emerald-700';
-        document.getElementById('studyFeedback').innerHTML='🎉 BENAR! +1 🍖 +1 ⚡ untuk semua telur!';
-        playPop(); spawnConfetti(14); vibrate([30,40,30]); showToast('✅ +1 🍖 +1 ⚡','bg-emerald-600');
-        setTimeout(()=>{ if(state.eggs.some(e=>e.progress>=e.max)) showToast('🥚 Telur siap!','bg-amber-500'); closeStudy(); },900);
+        document.getElementById('studyFeedback').innerHTML='🎉 BENAR! Telur ini +1 progress!';
+        playPop(); spawnConfetti(10); vibrate(30); showToast('✅ Telur ini +1!','bg-emerald-600');
+        setTimeout(()=>{ if(egg && egg.progress>=egg.max) showToast('🥚 Telur siap tetas!','bg-amber-500'); closeStudy(); },900);
+      } else {
+        // farm
+        state.meat+=1; state.energy+=1; farmStreak+=1; farmCorrect+=1; updateMissionProgress('study',1); saveState(); renderAll(); updateResources();
+        // also update farm screen counters immediately
+        const fs=document.getElementById('farmStreak'); if(fs) fs.textContent=farmStreak;
+        const fc=document.getElementById('farmCorrect'); if(fc) fc.textContent=farmCorrect;
+        document.getElementById('studyFeedback').className='mt-3 rounded-2xl p-3 text-center font-black bg-emerald-50 border-2 border-emerald-200 text-emerald-700';
+        document.getElementById('studyFeedback').innerHTML='🎉 BENAR! +1 🍖 +1 ⚡!';
+        playPop(); spawnConfetti(10); vibrate([30,40,30]); showToast('✅ +1 🍖 +1 ⚡','bg-emerald-600');
+        setTimeout(()=>{ closeStudy(); },800);
       }
     } else {
       btn.classList.add('option-wrong');
-      // show correct
       all.forEach(b=>{ if(b.textContent.includes(correct)) b.classList.add('option-correct'); });
       document.getElementById('studyFeedback').classList.remove('hidden');
       document.getElementById('studyFeedback').className='mt-3 rounded-2xl p-3 text-center font-black bg-red-50 border-2 border-red-200 text-red-700';
       document.getElementById('studyFeedback').innerHTML=`❌ Salah! Jawaban: <b>${correct}</b>`;
       playBuzz(); vibrate([50,30,50]);
+      if(studyMode==='farm'){ farmStreak=0; const fs=document.getElementById('farmStreak'); if(fs) fs.textContent=0; }
       if(studyMode==='arena'){
         setTimeout(()=>{ closeStudy(); handleBuff(false,false); },1100);
       }
@@ -1687,6 +1789,47 @@ window.closeStudy=()=>{
 function startStudyTimer(){
   clearInterval(studyTimer); let left=12000; const bar=document.getElementById('studyTimerBar'); const txt=document.getElementById('studyTimerText'); bar.style.width='100%'; bar.className='h-full bg-amber-400 transition-all duration-100';
   studyTimer=setInterval(()=>{ left-=50; const pct=(left/12000)*100; bar.style.width=pct+'%'; if(pct<30) bar.className='h-full bg-red-500 transition-all duration-100'; else if(pct<60) bar.className='h-full bg-amber-500 transition-all duration-100'; txt.textContent=`⏱️ ${(left/1000).toFixed(1)} detik lagi`; if(left<=0){ clearInterval(studyTimer); const fb=document.getElementById('studyFeedback'); fb.classList.remove('hidden'); fb.className='mt-3 rounded-2xl p-3 text-center font-black bg-red-50 border-2 border-red-200 text-red-700'; fb.textContent=`⏰ Waktu habis! Jawaban: ${currentProblem.answer}`; playBuzz(); setTimeout(()=>closeStudy(),900); } },50);
+}
+
+
+// ---------- Farm Belajar (tab BELAJAR) — inline, tidak ganggu telur ----------
+function initFarm(){
+  // generate new question for farm screen
+  generateFarmQuestion();
+  updateResources();
+}
+function generateFarmQuestion(){
+  const prob = generateProblem();
+  window._farmProblem = prob;
+  window._farmOpts = generateOptions(prob.answer, prob.type);
+  const qEl=document.getElementById('farmQuestion');
+  const lvlEl=document.getElementById('farmLevel');
+  const fb=document.getElementById('farmFeedback');
+  if(!qEl) return;
+  qEl.textContent=prob.question;
+  if(lvlEl) lvlEl.textContent='Level SMP • '+prob.level;
+  if(fb) fb.classList.add('hidden');
+  renderOptions('farmOptions', window._farmOpts, prob.answer, (val, btn, correct)=>{
+    vibrate(30);
+    const all=document.querySelectorAll('#farmOptions button');
+    all.forEach(b=>b.disabled=true);
+    if(val===correct){
+      btn.classList.add('option-correct');
+      state.meat+=1; state.energy+=1; farmStreak+=1; farmCorrect+=1;
+      updateMissionProgress('study',1); saveState(); renderAll();
+      const fs=document.getElementById('farmStreak'); if(fs) fs.textContent=farmStreak;
+      const fc=document.getElementById('farmCorrect'); if(fc) fc.textContent=farmCorrect;
+      if(fb){ fb.classList.remove('hidden'); fb.className='mt-3 rounded-2xl p-3 text-center font-black bg-emerald-50 border-2 border-emerald-200 text-emerald-700'; fb.innerHTML='🎉 BENAR! +1 🍖 +1 ⚡'; }
+      playPop(); spawnConfetti(10); vibrate(30); showToast('✅ +1 🍖 +1 ⚡','bg-emerald-600');
+      setTimeout(()=>generateFarmQuestion(), 900);
+    } else {
+      btn.classList.add('option-wrong');
+      all.forEach(b=>{ if(b.textContent.includes(correct)) b.classList.add('option-correct'); });
+      if(fb){ fb.classList.remove('hidden'); fb.className='mt-3 rounded-2xl p-3 text-center font-black bg-red-50 border-2 border-red-200 text-red-700'; fb.innerHTML=`❌ Salah! Jawaban: <b>${correct}</b>`; }
+      playBuzz(); vibrate([50,30,50]); farmStreak=0; const fs=document.getElementById('farmStreak'); if(fs) fs.textContent=0;
+      setTimeout(()=>generateFarmQuestion(), 1200);
+    }
+  });
 }
 
 // Hatch
@@ -2103,50 +2246,33 @@ window.useSkill=(n)=>{
   const idx=n-1;
   if(duelState.pCd[idx]>0){ showToast('⏳ Skill cooldown '+duelState.pCd[idx]+' detik!','bg-amber-500'); vibrate(20); return; }
   const skill=duelState.pSkills[idx];
-  // apply cooldown
   const cds=[3,6,12];
   duelState.pCd[idx]=cds[idx];
   updateSkillCooldownUI();
-  // cooldown countdown
   const cdInterval=setInterval(()=>{
     if(!duelState || duelState.selesai){ clearInterval(cdInterval); return; }
-    // already decremented in AI interval, but we also need per second
-    // we handle via AI interval 1s, this interval just for UI
     if(duelState.pCd[idx]===0){ clearInterval(cdInterval); updateSkillCooldownUI(); }
   }, 1000);
-  // calculate damage with terrain
   let dmg=skill.dmg + Math.floor(Math.random()*6);
   if(duelState.terrain.id==='mud' && duelState.player.stats.power>7) dmg=Math.round(dmg*1.12);
   if(duelState.terrain.id==='ice' && duelState.player.stats.weight>7) dmg=Math.round(dmg*0.88);
-  // apply
   duelState.enemyHp=Math.max(0, duelState.enemyHp - dmg);
   if(skill.heal){
     duelState.playerHp=Math.min(duelState.maxPlayerHp, duelState.playerHp + skill.heal);
   }
-  // effects per skill & character
-  const effMap={
-    1: {emoji: duelState.player.emoji, color:'from-sky-400 to-blue-500', text:'💥 '+skill.name},
-    2: {emoji: duelState.player.emoji, color:'from-orange-400 to-red-500', text:'🔥 '+skill.name},
-    3: {emoji:'🌟', color:'from-violet-500 to-fuchsia-500', text:'✨ ULTIMATE!'}
-  };
-  const eff=effMap[n];
-  // trigger animations
+  // Hide skill name — generic explosion only
   triggerDuelAnim('player', 'skill'+n);
   triggerDuelBuffEffect('player', n===3?'heal': n===2?'kritis':'perisai');
-  // floating damage
-  spawnDamageNumber('enemy', dmg, eff.emoji);
-  // screen effect
-  spawnSkillEffect(n, eff.emoji, eff.color);
-  // log
+  // Generic damage number without revealing skill icon/name
+  spawnDamageNumber('enemy', dmg, '💥');
+  // No big skill text overlay — removed for stealth (lawan tidak tahu skill)
   const log=document.getElementById('duelLog');
-  log.textContent=`${eff.text} — ${duelState.player.name} serang ${dmg} dmg! ${skill.heal?' + heal '+skill.heal+'!':''}`;
-  document.getElementById('duelFeedback').classList.remove('hidden');
-  document.getElementById('duelFeedback').className='mt-2 rounded-xl p-2 text-center font-black text-sm bg-emerald-50 border-2 border-emerald-200 text-emerald-700';
-  document.getElementById('duelFeedback').textContent=`✅ ${skill.name} kena ${dmg}! ${skill.heal?'Heal +'+skill.heal:''}`;
-  playPop(); vibrate(n===3?[50,30,80]:30);
+  log.textContent=`💥 Serangan! -${dmg} HP!`+(skill.heal?' ❤️ +'+skill.heal:'');
+  // No feedback that reveals name
+  document.getElementById('duelFeedback').classList.add('hidden');
+  playSkillExplosion(n); vibrate(n===3?[60,30,80]:[35,20,35]);
   updateDuelHp();
   if(duelState.enemyHp<=0){ setTimeout(()=>finishDuel(true), 600); return; }
-  // increment ronde
   duelState.ronde+=1;
   document.getElementById('duelRound').textContent='Ronde '+duelState.ronde;
 };
@@ -2162,11 +2288,11 @@ function aiUseSkill(idx){
   if(skill.heal) duelState.enemyHp=Math.min(duelState.maxEnemyHp, duelState.enemyHp + skill.heal);
   triggerDuelAnim('enemy', 'skill'+(idx+1));
   triggerDuelBuffEffect('enemy', idx===2?'heal':'kritis');
-  spawnDamageNumber('player', dmg, skill.icon);
-  spawnSkillEffect(idx+1, skill.icon, 'from-red-400 to-orange-500');
+  spawnDamageNumber('player', dmg, '💥');
+  // No skill name overlay for AI either
   updateDuelHp();
   const log=document.getElementById('duelLog');
-  log.textContent=`${duelState.enemy.name} pakai ${skill.name} — kamu kena ${dmg}!`;
+  log.textContent=`💥 Lawan menyerang! -${dmg} HP!`;
   if(duelState.playerHp<=0) setTimeout(()=>finishDuel(false), 600);
 }
 function spawnDamageNumber(target, dmg, icon){
@@ -2485,98 +2611,6 @@ window.resetGame=()=>{
     saveState(); renderAll(); switchTab('penetasan'); showToast('🔄 Game di-reset!','bg-slate-800'); arenaBattle=null; arenaSelection=null; vibrate(50);
   }
 }
-// ---------- Study FAB Draggable & Hideable ----------
-window.toggleStudyFab=(show)=>{
-  const wrap=document.getElementById('studyFabWrap');
-  const showBtn=document.getElementById('studyFabShow');
-  if(show){
-    wrap.classList.remove('hidden');
-    showBtn.classList.add('hidden');
-    localStorage.setItem('mmt_studyFab_hidden','0');
-  } else {
-    wrap.classList.add('hidden');
-    showBtn.classList.remove('hidden');
-    localStorage.setItem('mmt_studyFab_hidden','1');
-  }
-  vibrate(20);
-};
-(function initStudyFab(){
-  const fab=document.getElementById('studyFab');
-  const wrap=document.getElementById('studyFabWrap');
-  if(!fab||!wrap) return;
-  // restore hidden state
-  if(localStorage.getItem('mmt_studyFab_hidden')==='1'){
-    wrap.classList.add('hidden');
-    document.getElementById('studyFabShow').classList.remove('hidden');
-  }
-  // restore position
-  const savedX=localStorage.getItem('mmt_studyFab_x');
-  const savedY=localStorage.getItem('mmt_studyFab_y');
-  if(savedX&&savedY){
-    wrap.style.right='auto';
-    wrap.style.bottom='auto';
-    wrap.style.left=savedX;
-    wrap.style.top=savedY;
-  }
-  let isDragging=false, hasDragged=false, startX=0, startY=0, origX=0, origY=0;
-  function getPos(e){
-    const t=e.touches? e.touches[0] : e;
-    return {x:t.clientX, y:t.clientY};
-  }
-  function onStart(e){
-    const p=getPos(e);
-    isDragging=true; hasDragged=false;
-    startX=p.x; startY=p.y;
-    const rect=wrap.getBoundingClientRect();
-    origX=rect.left; origY=rect.top;
-    fab.style.transition='none';
-    // Force convert from Tailwind right/bottom to left/top so horizontal drag works
-    wrap.style.left=rect.left+'px';
-    wrap.style.top=rect.top+'px';
-    wrap.style.right='auto';
-    wrap.style.bottom='auto';
-    if(e.cancelable) e.preventDefault();
-  }
-  function onMove(e){
-    if(!isDragging) return;
-    const p=getPos(e);
-    const dx=p.x-startX, dy=p.y-startY;
-    if(Math.abs(dx)>5||Math.abs(dy)>5) hasDragged=true;
-    if(hasDragged){
-      const newLeft=origX+dx;
-      const newTop=origY+dy;
-      // keep inside viewport
-      const maxX=window.innerWidth - wrap.offsetWidth - 8;
-      const maxY=window.innerHeight - wrap.offsetHeight - 8;
-      wrap.style.left=Math.max(8, Math.min(maxX, newLeft))+'px';
-      wrap.style.top=Math.max(8, Math.min(maxY, newTop))+'px';
-    }
-  }
-  function onEnd(e){
-    if(!isDragging) return;
-    isDragging=false;
-    fab.style.transition='';
-    if(hasDragged){
-      // save position
-      localStorage.setItem('mmt_studyFab_x', wrap.style.left);
-      localStorage.setItem('mmt_studyFab_y', wrap.style.top);
-      setTimeout(()=>hasDragged=false,100);
-    } else {
-      // click without drag -> open study
-      openStudy(false);
-    }
-  }
-  fab.addEventListener('mousedown', onStart);
-  fab.addEventListener('touchstart', onStart, {passive:false});
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('touchmove', onMove, {passive:false});
-  window.addEventListener('mouseup', onEnd);
-  window.addEventListener('touchend', onEnd);
-  // also click fallback if not dragged (for accessibility)
-  fab.addEventListener('click', (e)=>{
-    if(hasDragged){ e.preventDefault(); e.stopPropagation(); }
-  });
-})();
 
 loadState(); initDailyMissions(); renderAll(); switchTab('penetasan'); updateResources();
 setTimeout(()=>{ if(firebaseReady) muatPeringkat(); }, 1200);
