@@ -95,7 +95,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
     <span class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay:0.15s"></span>
     <span class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay:0.3s"></span>
   </div>
-  <p class="absolute bottom-8 text-xs font-bold opacity-60">Ketuk untuk memulai • v2.5</p>
+  <p class="absolute bottom-8 text-xs font-bold opacity-60">Ketuk untuk memulai • v2.6</p>
 </div>
 
 <div id="app" class="max-w-[480px] mx-auto min-h-screen bg-[#fff7ed] relative shadow-2xl overflow-hidden flex flex-col">
@@ -163,7 +163,17 @@ input, textarea{-webkit-user-select:text; user-select:text}
     </div>
   </header>
 
-  <main class="flex-1 overflow-y-auto hide-scroll pb-28">
+  <!-- NAVIGASI UTAMA: selalu terlihat setelah header -->
+  <nav id="mainNav" class="sticky top-0 bg-white/95 glass-nav border-y border-slate-100 px-1.5 py-1.5 flex justify-between items-center gap-0.5 shadow-[0_4px_18px_rgba(0,0,0,0.07)] z-40">
+    <button id="tab-penetasan" onclick="switchTab('penetasan')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl bg-violet-600 text-white shadow-md btn-native"><span class="text-base leading-none">🥚</span><span class="text-[9px] font-black tracking-tight">TETAS</span></button>
+    <button id="tab-belajar" onclick="switchTab('belajar')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl text-slate-400 btn-native"><span class="text-base leading-none">📚</span><span class="text-[9px] font-black tracking-tight">BELAJAR</span></button>
+    <button id="tab-makan" onclick="switchTab('makan')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl text-slate-400 btn-native"><span class="text-base leading-none">🍖</span><span class="text-[9px] font-black tracking-tight">MAKAN</span></button>
+    <button id="tab-arena" onclick="switchTab('arena')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl text-slate-400 btn-native"><span class="text-base leading-none">🏟️</span><span class="text-[9px] font-black tracking-tight">ARENA</span></button>
+    <button id="tab-toko" onclick="switchTab('toko')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl text-slate-400 btn-native"><span class="text-base leading-none">🛍️</span><span class="text-[9px] font-black tracking-tight">TOKO</span></button>
+    <button id="tab-peringkat" onclick="switchTab('peringkat')" class="flex-1 min-w-0 flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-xl text-slate-400 btn-native"><span class="text-base leading-none">🏆</span><span class="text-[9px] font-black tracking-tight">RANK</span></button>
+  </nav>
+
+  <main class="flex-1 overflow-y-auto hide-scroll pb-4">
     <!-- PENETASAN -->
     <section id="screen-penetasan" class="p-4 space-y-4">
       <div class="bg-gradient-to-br from-amber-400 to-orange-500 rounded-[28px] p-4 text-white relative overflow-hidden shadow-lg">
@@ -663,7 +673,7 @@ input, textarea{-webkit-user-select:text; user-select:text}
             <div class="flex-1 min-w-0">
               <div class="text-xs font-black text-slate-500 tracking-widest">KAMU</div>
               <div id="rankMyName" class="font-black text-slate-800 leading-none">Pemain Baru</div>
-              <div class="text-xs font-bold text-slate-500"><span id="rankMyPiala">0</span> 🏆 • <span id="rankMyMenang">0</span> Menang</div>
+              <div class="text-xs font-bold text-slate-500"><span id="rankMyPiala">0</span> 🏆 • <span id="rankMyMenang">0</span> Menang • <span id="rankMyCollection">0</span> Koleksi</div>
             </div>
             <button onclick="gantiNama()" class="bg-violet-600 text-white font-black px-4 py-2 rounded-full text-xs btn-native">GANTI</button>
           </div>
@@ -674,35 +684,21 @@ input, textarea{-webkit-user-select:text; user-select:text}
         <button onclick="uploadSkor()" class="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-black py-2.5 rounded-2xl text-sm btn-native btn-3d">⤴️ Upload Skorku</button>
       </div>
       <div id="leaderboardList" class="space-y-2">
-        <div class="bg-white rounded-2xl p-4 text-center border-2 border-slate-100">
-          <div class="text-2xl mb-1">⏳</div>
-          <p class="font-bold text-slate-600 text-sm">Memuat peringkat...</p>
+        <div class="bg-white rounded-2xl p-4 text-center border-2 border-slate-100"><div class="text-2xl mb-1">⏳</div><p class="font-bold text-slate-600 text-sm">Memuat peringkat...</p></div>
+      </div>
+      <div class="bg-gradient-to-br from-violet-600 to-fuchsia-500 rounded-[24px] p-4 text-white shadow-lg">
+        <div class="flex items-center justify-between"><div><div class="text-[10px] font-black tracking-widest opacity-80">🏆 KOLEKTOR MONSTER</div><h3 class="font-baloo font-extrabold text-xl leading-none mt-1">Kejar ⭐5!</h3></div><div class="text-3xl">👑</div></div>
+        <div class="grid grid-cols-3 gap-2 mt-3 text-center">
+          <div class="bg-white/15 rounded-xl p-2"><div id="myUniqueMonsters" class="font-black text-lg">0</div><div class="text-[9px] font-bold opacity-80">UNIK</div></div>
+          <div class="bg-white/15 rounded-xl p-2"><div id="myTotalStars" class="font-black text-lg">0</div><div class="text-[9px] font-bold opacity-80">TOTAL ⭐</div></div>
+          <div class="bg-white/15 rounded-xl p-2"><div id="myStar5Count" class="font-black text-lg">0</div><div class="text-[9px] font-bold opacity-80">⭐5</div></div>
         </div>
+        <div id="collectorLeaderboardList" class="space-y-2 mt-3"><div class="bg-white/15 rounded-xl p-3 text-center text-xs font-bold">Memuat peringkat kolektor...</div></div>
       </div>
     </section>
   </main>
 
   
-  <nav class="absolute bottom-0 inset-x-0 bg-white/95 glass-nav border-t border-slate-100 px-1 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex justify-between items-center gap-0.5 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] z-30 rounded-t-[28px]">
-    <button id="tab-penetasan" onclick="switchTab('penetasan')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl bg-violet-600 text-white shadow-md btn-native">
-      <span class="text-lg leading-none">🥚</span><span class="text-[10px] font-black tracking-wide">TETAS</span>
-    </button>
-    <button id="tab-belajar" onclick="switchTab('belajar')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
-      <span class="text-lg leading-none">📚</span><span class="text-[10px] font-black tracking-wide">BELAJAR</span>
-    </button>
-    <button id="tab-makan" onclick="switchTab('makan')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
-      <span class="text-lg leading-none">🍖</span><span class="text-[10px] font-black tracking-wide">MAKAN</span>
-    </button>
-    <button id="tab-arena" onclick="switchTab('arena')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
-      <span class="text-lg leading-none">🏟️</span><span class="text-[10px] font-black tracking-wide">ARENA</span>
-    </button>
-    <button id="tab-toko" onclick="switchTab('toko')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
-      <span class="text-lg leading-none">🛍️</span><span class="text-[10px] font-black tracking-wide">TOKO</span>
-    </button>
-    <button id="tab-peringkat" onclick="switchTab('peringkat')" class="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native">
-      <span class="text-lg leading-none">🏆</span><span class="text-[10px] font-black tracking-wide">RANK</span>
-    </button>
-  </nav>
 </div>
 
 <!-- Modal Belajar Pilihan Ganda -->
@@ -1037,6 +1033,33 @@ function getMonsterImg(mon){
   if(mon.file) return `assets/monsters/${mon.file}`;
   return `assets/monsters/${mon.name.toLowerCase().replace(/\s+/g,'-')}.png`;
 }
+// Stat tempur efektif: tier dan bintang tetap terasa walau stat mentah sudah 12.
+function getEffectiveStats(mon){
+  const tierBonus={common:0,rare:2,legend:4}[mon.tier]||0;
+  const starBonus=Math.min(5,mon.stars||0)*2;
+  return {
+    speed:(mon.stats?.speed||5)+tierBonus+starBonus,
+    power:(mon.stats?.power||5)+tierBonus+starBonus,
+    weight:(mon.stats?.weight||5)+tierBonus+starBonus
+  };
+}
+function getGrowthScale(mon){
+  if(mon.stage==='adult') return 1;
+  const p=Math.max(0,Math.min(5,mon.feedProgress||0));
+  return 0.52 + p*0.09;
+}
+function getStatCap(mon){ return 12; }
+function getCollectionStats(){
+  const unique=new Set(state.monsters.map(m=>m.name)).size;
+  const totalStars=state.monsters.reduce((s,m)=>s+(m.stars||0),0);
+  const star5=state.monsters.filter(m=>(m.stars||0)>=5).length;
+  // Bintang dibuat jauh lebih bernilai agar kolektor terdorong mengejar ⭐5.
+  const score=unique*10 + totalStars*25 + star5*75 + state.monsters.length*2;
+  return {unique,totalStars,star5,score};
+}
+function getTierIndex(t){ return t==='legend'?2:t==='rare'?1:0; }
+function randomInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function getMonsterImgStyle(mon){ return `transform:scale(${getGrowthScale(mon)});transform-origin:center;transition:transform .25s ease`; }
 function getEggImg(type){ return `assets/${EGG_ODDS[type].file}`; }
 function vibrate(p){ if(navigator.vibrate) navigator.vibrate(p); }
 // Avatar dari galeri
@@ -1190,6 +1213,7 @@ function updateResources(){
   document.getElementById('rankMyName').textContent=playerName;
   document.getElementById('rankMyPiala').textContent=state.stats.piala||0;
   document.getElementById('rankMyMenang').textContent=state.stats.wins||0;
+   const rc=document.getElementById('rankMyCollection'); if(rc) rc.textContent=getCollectionStats().unique;
   const totalChars = POOL.common.length + POOL.rare.length + POOL.legend.length;
   document.getElementById('monsterCountDetail').textContent= totalChars + ' Karakter';
   const fm2=document.getElementById('farmMeatCount'); if(fm2) fm2.textContent=state.meat;
@@ -1254,7 +1278,7 @@ function renderPenetasan(){
         </div>
         <div class="text-center py-2">
           <div class="w-20 h-20 mx-auto bg-slate-50 rounded-[20px] flex items-center justify-center border-2 border-slate-100 overflow-hidden p-1 relative">
-            <img src="${getMonsterImg(m)}" alt="${m.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <img src="${getMonsterImg(m)}" style="${getMonsterImgStyle(m)}" alt="${m.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
             <span style="display:none" class="text-5xl w-full h-full items-center justify-center">${m.emoji}</span>
             ${(m.stars||0)>0?`<span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full border-2 border-white shadow">⭐${m.stars}</span>`:''}
           </div>
@@ -1263,9 +1287,9 @@ function renderPenetasan(){
           ${(m.stars||0)>0?`<div class="mt-1 inline-flex bg-amber-100 text-amber-700 text-[10px] font-black px-2 py-0.5 rounded-full border border-amber-200">⭐${m.stars} • +${m.stars} semua stat!</div>`:''}
         </div>
         <div class="space-y-1.5">
-          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-violet-600">KEC</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-violet-500" style="width:${m.stats.speed*10}%"></div></div><span class="w-4 text-slate-700">${m.stats.speed}</span></div>
-          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-rose-600">KUA</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-rose-500" style="width:${m.stats.power*10}%"></div></div><span class="w-4 text-slate-700">${m.stats.power}</span></div>
-          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-amber-600">BRT</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-amber-500" style="width:${m.stats.weight*10}%"></div></div><span class="w-4 text-slate-700">${m.stats.weight}</span></div>
+          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-violet-600">KEC</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-violet-500" style="width:${Math.min(100,getEffectiveStats(m).speed*6.25)}%"></div></div><span class="w-4 text-slate-700">${getEffectiveStats(m).speed}</span></div>
+          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-rose-600">KUA</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-rose-500" style="width:${Math.min(100,getEffectiveStats(m).power*6.25)}%"></div></div><span class="w-4 text-slate-700">${getEffectiveStats(m).power}</span></div>
+          <div class="flex items-center gap-2 text-[11px] font-black"><span class="w-8 text-amber-600">BRT</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-amber-500" style="width:${Math.min(100,getEffectiveStats(m).weight*6.25)}%"></div></div><span class="w-4 text-slate-700">${getEffectiveStats(m).weight}</span></div>
         </div>
         ${isBaby?`<div class="mt-2 bg-orange-50 border border-orange-100 rounded-2xl px-3 py-2 flex items-center justify-between"><span class="text-xs font-bold text-orange-700">Butuh ${5-m.feedProgress} 🍖 lagi</span><span class="text-xs">👶→💪</span></div>`:''}
       `;
@@ -1342,6 +1366,7 @@ window.mergeMonsters=(name, stars)=>{
   if(keeper.tier==='legend'){ keeper.stats.power=Math.min(12, keeper.stats.power+1); }
   else if(keeper.tier==='rare'){ keeper.stats.speed=Math.min(12, keeper.stats.speed+1); }
   saveState(); renderAll();
+  uploadCollectorScore();
   updateMissionProgress('merge',1);
   spawnConfetti(30); playWin(); vibrate([60,40,80]);
   showToast('⭐ MERGE! '+name+' jadi ⭐'+keeper.stars+'! +1 semua stat!','bg-violet-600');
@@ -1362,7 +1387,7 @@ function renderMakan(){
       card.className='bg-white rounded-[24px] p-4 shadow-md border-2 border-slate-100 flex gap-4 items-center';
       card.innerHTML=`
         <div class="w-20 h-20 bg-orange-50 rounded-[20px] flex items-center justify-center shrink-0 border-2 border-orange-100 relative overflow-hidden p-1">
-          <img src="${getMonsterImg(m)}" alt="${m.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <img src="${getMonsterImg(m)}" style="${getMonsterImgStyle(m)}" alt="${m.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
           <span style="display:none" class="text-4xl w-full h-full items-center justify-center">${m.emoji}</span>
           <span class="absolute -top-2 -right-2 w-7 h-7 bg-white border-2 border-orange-200 rounded-full flex items-center justify-center text-xs font-black">${m.feedProgress}/5</span>
         </div>
@@ -1383,7 +1408,7 @@ function renderMakan(){
     const canFeedAdult = state.meat>0 && (m.stats.speed<12 || m.stats.power<12 || m.stats.weight<12);
     const card=document.createElement('div');
     card.className='bg-white rounded-[24px] p-3 shadow border-2 border-violet-100 text-center relative overflow-hidden flex flex-col';
-    card.innerHTML=`<div class="w-16 h-16 mx-auto bg-slate-50 rounded-2xl flex items-center justify-center overflow-hidden p-1 border border-slate-100 relative"><img src="${getMonsterImg(m)}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span style="display:none" class="text-3xl w-full h-full items-center justify-center">${m.emoji}</span>${stars>0?`<span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[9px] font-black px-1 py-0.5 rounded-full border border-white">⭐${stars}</span>`:''}</div><div class="font-black text-slate-800 text-sm leading-none mt-1 flex items-center justify-center gap-1">${m.name} ${stars>0?`<span class="text-amber-500 text-[10px]">${'⭐'.repeat(Math.min(stars,5))}</span>`:''}</div><div class="text-[10px] font-black px-2 py-0.5 rounded-full border inline-flex mt-1 ${tier.cls}">${tier.label.split(' ')[0]} • DEWASA ${stars>0?'⭐'+stars:''}</div><div class="text-[11px] font-bold text-violet-600 mt-1">KEC ${m.stats.speed} • KUA ${m.stats.power} • BRT ${m.stats.weight}</div><button onclick="feedMonster('${m.id}')" ${canFeedAdult?'':'disabled'} class="mt-2 w-full ${canFeedAdult?'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow btn-3d':'bg-slate-100 text-slate-400'} font-black py-2 rounded-full text-xs flex items-center justify-center gap-1 btn-native">🍖 Feed +1 Stat ${canFeedAdult?'':' (Habis/Max)'}</button>`;
+    card.innerHTML=`<div class="w-16 h-16 mx-auto bg-slate-50 rounded-2xl flex items-center justify-center overflow-hidden p-1 border border-slate-100 relative"><img src="${getMonsterImg(m)}" style="${getMonsterImgStyle(m)}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><span style="display:none" class="text-3xl w-full h-full items-center justify-center">${m.emoji}</span>${stars>0?`<span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[9px] font-black px-1 py-0.5 rounded-full border border-white">⭐${stars}</span>`:''}</div><div class="font-black text-slate-800 text-sm leading-none mt-1 flex items-center justify-center gap-1">${m.name} ${stars>0?`<span class="text-amber-500 text-[10px]">${'⭐'.repeat(Math.min(stars,5))}</span>`:''}</div><div class="text-[10px] font-black px-2 py-0.5 rounded-full border inline-flex mt-1 ${tier.cls}">${tier.label.split(' ')[0]} • DEWASA ${stars>0?'⭐'+stars:''}</div><div class="text-[11px] font-bold text-violet-600 mt-1">KEC ${getEffectiveStats(m).speed} • KUA ${getEffectiveStats(m).power} • BRT ${getEffectiveStats(m).weight}</div><button onclick="feedMonster('${m.id}')" ${canFeedAdult?'':'disabled'} class="mt-2 w-full ${canFeedAdult?'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow btn-3d':'bg-slate-100 text-slate-400'} font-black py-2 rounded-full text-xs flex items-center justify-center gap-1 btn-native">🍖 Feed +1 Stat ${canFeedAdult?'':' (Habis/Max)'}</button>`;
     adultGrid.appendChild(card);
   }); } else adultShow.classList.add('hidden');
 }
@@ -1411,7 +1436,7 @@ function renderArena(){
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2"><h4 class="font-black text-slate-800 flex items-center gap-1">${m.name} ${stars>0?`<span class="text-amber-500 text-xs">${'⭐'.repeat(Math.min(stars,3))} ${stars>3?'⭐'+stars:''}</span>`:''}</h4><span class="text-[9px] font-black px-2 py-0.5 rounded-full border ${tier.cls}">${tier.label.split(' ')[0]}</span></div>
-          <div class="flex gap-2 mt-1 text-[11px] font-black"><span class="bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">KEC ${m.stats.speed}${stars>0?`<b class="text-amber-600">+${stars}</b>`:''}</span><span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">KUA ${m.stats.power}${stars>0?`<b class="text-amber-600">+${stars}</b>`:''}</span><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">BRT ${m.stats.weight}</span></div>
+          <div class="flex gap-2 mt-1 text-[11px] font-black"><span class="bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">KEC ${getEffectiveStats(m).speed}</span><span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">KUA ${getEffectiveStats(m).power}</span><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">BRT ${getEffectiveStats(m).weight}</span></div>
           ${stars>0?`<div class="text-[10px] font-bold text-amber-600 mt-1">⭐${stars} • Stat +${stars} semua! Tap untuk pilih jagoan bintang!</div>`:''}
         </div>
         <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 ${sel?'bg-violet-600 border-violet-600 text-white':'border-slate-200 text-transparent'}">✓</div>`;
@@ -1685,7 +1710,7 @@ window.switchTab=(tab)=>{
     else btn.className='flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl text-slate-400 btn-native';
   });
   window.scrollTo({top:0, behavior:'smooth'});
-  if(tab==='peringkat') muatPeringkat();
+  if(tab==='peringkat'){ muatPeringkat(); muatPeringkatKolektor(); uploadCollectorScore(); }
   if(tab==='belajar') initFarm();
   vibrate(20);
 }
@@ -1837,7 +1862,7 @@ window.hatchEgg=(eggId)=>{
   const idx=state.eggs.findIndex(e=>e.id===eggId); if(idx===-1) return; const egg=state.eggs[idx]; if(egg.progress<egg.max) return;
   // gachaTier override if exists
   let tierToUse = egg.gachaTier || pickTier(egg.type);
-  const monster=randomMonster(tierToUse); state.eggs.splice(idx,1); state.monsters.unshift(monster); state.stats.hatched+=1; updateMissionProgress('hatch',1); saveState(); renderAll(); showHatchReveal(monster, egg.type);
+  const monster=randomMonster(tierToUse); state.eggs.splice(idx,1); state.monsters.unshift(monster); state.stats.hatched+=1; updateMissionProgress('hatch',1); saveState(); renderAll(); uploadCollectorScore(); showHatchReveal(monster, egg.type);
 }
 function showHatchReveal(monster, eggType){
   const modal=document.getElementById('hatchModal');
@@ -1847,12 +1872,12 @@ function showHatchReveal(monster, eggType){
   setTimeout(()=>{
     const img=document.getElementById('hatchMonsterImg'); const emoji=document.getElementById('hatchMonsterEmoji');
     const src=getMonsterImg(monster);
-    img.src=src; img.classList.remove('hidden'); img.onerror=()=>{ img.style.display='none'; emoji.style.display='block'; }; emoji.textContent=monster.emoji; emoji.style.display='none';
+    img.src=src; img.style.transform='scale(0.58)'; img.style.transformOrigin='center'; img.classList.remove('hidden'); img.onerror=()=>{ img.style.display='none'; emoji.style.display='block'; }; emoji.textContent=monster.emoji; emoji.style.display='none';
     const testImg=new Image(); testImg.onload=()=>{ img.style.display='block'; emoji.style.display='none'; }; testImg.onerror=()=>{ img.style.display='none'; emoji.style.display='block'; }; testImg.src=src;
     emojiEl.textContent=monster.emoji; emojiEl.style.animation='wiggle 0.6s ease-in-out infinite'; title.textContent='✨ MENETAS! ✨'; subtitle.textContent=`Kamu dapat ${TIER_CONFIG[monster.tier].label}!`;
     document.getElementById('hatchMonsterTier').textContent=TIER_CONFIG[monster.tier].label; document.getElementById('hatchMonsterTier').className=`inline-flex text-[10px] font-black tracking-widest px-3 py-1 rounded-full border ${TIER_CONFIG[monster.tier].cls}`;
     document.getElementById('hatchMonsterName').textContent=monster.name; document.getElementById('hatchMonsterDesc').textContent=monster.desc;
-    document.getElementById('hatchSpeed').textContent=monster.stats.speed; document.getElementById('hatchPower').textContent=monster.stats.power; document.getElementById('hatchWeight').textContent=monster.stats.weight;
+    const hatchStats=getEffectiveStats(monster); document.getElementById('hatchSpeed').textContent=hatchStats.speed; document.getElementById('hatchPower').textContent=hatchStats.power; document.getElementById('hatchWeight').textContent=hatchStats.weight;
     const cardEl=document.getElementById('hatchCard');
     if(monster.tier==='legend') cardEl.className='mt-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-[24px] p-4';
     else if(monster.tier==='rare') cardEl.className='mt-4 bg-gradient-to-br from-sky-50 to-blue-50 border-2 border-sky-200 rounded-[24px] p-4';
@@ -1902,9 +1927,20 @@ window.buyMeatPack=()=>{
 
 // Arena
 window.selectArenaMonster=(id)=>{ arenaSelection=id; renderArena(); vibrate(20); }
-function createOpponents(){
-  const tiers=['common','rare','legend'];
-  function randOpp(){ const t=tiers[Math.floor(Math.random()*tiers.length)]; const mon=randomMonster(t); mon.stage='adult'; mon.isAI=true; return mon; }
+function createOpponents(playerMon=null){
+  const playerStars=playerMon ? (playerMon.stars||0) : 0;
+  const playerTier=playerMon ? getTierIndex(playerMon.tier) : 0;
+  function randOpp(){
+    // AI mengikuti perkembangan pemain: tidak selalu kuat, tetapi tidak lagi selalu 0⭐.
+    const minStar=Math.max(0,playerStars-1);
+    const maxStar=Math.min(5,playerStars+1);
+    const stars=randomInt(minStar,maxStar);
+    const minTier=Math.max(0,playerTier-1);
+    const maxTier=Math.min(2,playerTier+1);
+    const t=['common','rare','legend'][randomInt(minTier,maxTier)];
+    const mon=randomMonster(t); mon.stage='adult'; mon.isAI=true; mon.stars=stars;
+    return mon;
+  }
   return [randOpp(), randOpp()];
 }
 window.startArena=()=>{
@@ -1926,7 +1962,7 @@ let raceTimerInterval=null;
 let duelTimerInterval=null;
 
 function startRace(playerMon, terrain){
-  const opps=createOpponents();
+  const opps=createOpponents(playerMon);
   raceState={
     player: JSON.parse(JSON.stringify(playerMon)),
     opps,
@@ -1993,8 +2029,8 @@ function startRace(playerMon, terrain){
       const isPlayer=i===0;
       return `<div class="rounded-xl p-2 ${isPlayer?'bg-violet-600 text-white':'bg-slate-50 border border-slate-200'}">
         <div class="font-black text-xs leading-none">${isPlayer?'KAMU': 'LAWAN '+(i)} ${stars>0?'⭐'+stars:''}</div>
-        <div class="text-[11px] font-bold mt-1 ${isPlayer?'text-white/90':'text-slate-600'}">KEC ${r.stats.speed}${stars>0?`+${stars}`:''} • KUA ${r.stats.power}${stars>0?`+${stars}`:''}</div>
-        <div class="text-[10px] font-bold ${isPlayer?'text-amber-200':'text-slate-500'}">BRT ${r.stats.weight} • ${r.tier.toUpperCase()}</div>
+        <div class="text-[11px] font-bold mt-1 ${isPlayer?'text-white/90':'text-slate-600'}">KEC ${getEffectiveStats(r).speed} • KUA ${getEffectiveStats(r).power}</div>
+        <div class="text-[10px] font-bold ${isPlayer?'text-amber-200':'text-slate-500'}">BRT ${getEffectiveStats(r).weight} • ${r.tier.toUpperCase()}</div>
       </div>`;
     }).join('');
   }
@@ -2019,9 +2055,10 @@ function runRaceLoop(){
     // hitung inc per monster berdasarkan atribut murni
     function calcInc(mon){
       const stars=mon.stars||0;
-      const effSpeed = mon.stats.speed + stars*1.0;
-      const effPower = mon.stats.power + stars*0.9;
-      const effWeight = mon.stats.weight + stars*0.4;
+      const eff=getEffectiveStats(mon);
+      const effSpeed = eff.speed;
+      const effPower = eff.power;
+      const effWeight = eff.weight;
       let inc = (effSpeed*0.042 + effPower*0.018 + stars*0.028) - (effWeight*0.008);
       inc += (Math.random()*0.05);
       // terrain
@@ -2109,7 +2146,7 @@ function finishRace(){
       </div>
       <div class="bg-violet-50 border border-violet-100 rounded-2xl p-3 text-left">
         <div class="font-black text-violet-800 text-xs tracking-widest">STAT KAMU</div>
-        <div class="text-sm font-bold text-violet-700">KEC ${raceState.player.stats.speed} • KUA ${raceState.player.stats.power} • BRT ${raceState.player.stats.weight} ${(raceState.player.stars||0)>0?'• ⭐'+raceState.player.stars:''} • ${raceState.terrain.icon} ${raceState.terrain.name}</div>
+        <div class="text-sm font-bold text-violet-700">KEC ${getEffectiveStats(raceState.player).speed} • KUA ${getEffectiveStats(raceState.player).power} • BRT ${getEffectiveStats(raceState.player).weight} ${(raceState.player.stars||0)>0?'• ⭐'+raceState.player.stars:''} • ${raceState.terrain.icon} ${raceState.terrain.name}</div>
         <div class="text-xs font-bold text-violet-600 mt-1">💡 Tingkatkan: beri makan dewasa +1 stat, atau merge duplikat jadi ⭐!</div>
       </div>
     </div>
@@ -2133,8 +2170,9 @@ let duelState=null;
 let duelAiInterval=null;
 function getSkillsForMonster(mon){
   const stars=mon.stars||0;
-  const basePower=mon.stats.power;
-  const baseSpeed=mon.stats.speed;
+  const combat=getEffectiveStats(mon);
+  const basePower=combat.power;
+  const baseSpeed=combat.speed;
   // bintang menambah damage/heal
   return [
     {id:1, name:'Pukulan Cepat', icon:'💥', desc:'Cepat'+(stars>0?' ⭐'+stars:''), cd:3, dmg: Math.round(basePower*2.6 + baseSpeed*0.6 + 6 + stars*2.2)},
@@ -2143,9 +2181,11 @@ function getSkillsForMonster(mon){
   ];
 }
 function startDuel(playerMon, terrain){
-  const opp=createOpponents()[0];
-  const maxHp = 360 + Math.floor(playerMon.stats.power*9);
-  const eMaxHp = 360 + Math.floor(opp.stats.power*9);
+  const opp=createOpponents(playerMon)[0];
+  const pCombat=getEffectiveStats(playerMon);
+  const eCombat=getEffectiveStats(opp);
+  const maxHp = 360 + Math.floor(pCombat.power*9);
+  const eMaxHp = 360 + Math.floor(eCombat.power*9);
   const pSkills=getSkillsForMonster(playerMon);
   const eSkills=getSkillsForMonster(opp);
   duelState={
@@ -2173,7 +2213,7 @@ function startDuel(playerMon, terrain){
   const pStars=playerMon.stars||0;
   document.getElementById('duelPlayerName').textContent=playerMon.name + (pStars>0? ' ⭐'+pStars:'');
   document.getElementById('duelPlayerNameBig').textContent=playerMon.name + (pStars>0? ' ⭐'+pStars:'');
-  document.getElementById('duelPlayerStats').textContent=`KEC ${playerMon.stats.speed} • KUA ${playerMon.stats.power}` + (pStars>0? ` +${pStars} ⭐`:'' );
+  document.getElementById('duelPlayerStats').textContent=`KEC ${getEffectiveStats(playerMon).speed} • KUA ${getEffectiveStats(playerMon).power}` + (pStars>0? ` +${pStars} ⭐`:'' );
   document.getElementById('duelPlayerEmoji').textContent=playerMon.emoji;
   document.getElementById('duelPlayerEmojiBig').textContent=playerMon.emoji;
   const pImg=document.getElementById('duelPlayerImg');
@@ -2183,7 +2223,7 @@ function startDuel(playerMon, terrain){
   const eStars=opp.stars||0;
   document.getElementById('duelEnemyName').textContent=opp.name + (eStars>0? ' ⭐'+eStars:'');
   document.getElementById('duelEnemyNameBig').textContent=opp.name + (eStars>0? ' ⭐'+eStars:'');
-  document.getElementById('duelEnemyStats').textContent=`KEC ${opp.stats.speed} • KUA ${opp.stats.power}` + (eStars>0? ` +${eStars} ⭐`:'' );
+  document.getElementById('duelEnemyStats').textContent=`KEC ${getEffectiveStats(opp).speed} • KUA ${getEffectiveStats(opp).power}` + (eStars>0? ` +${eStars} ⭐`:'' );
   document.getElementById('duelEnemyEmoji').textContent=opp.emoji;
   document.getElementById('duelEnemyEmojiBig').textContent=opp.emoji;
   const eImg=document.getElementById('duelEnemyImg');
@@ -2254,8 +2294,8 @@ window.useSkill=(n)=>{
     if(duelState.pCd[idx]===0){ clearInterval(cdInterval); updateSkillCooldownUI(); }
   }, 1000);
   let dmg=skill.dmg + Math.floor(Math.random()*6);
-  if(duelState.terrain.id==='mud' && duelState.player.stats.power>7) dmg=Math.round(dmg*1.12);
-  if(duelState.terrain.id==='ice' && duelState.player.stats.weight>7) dmg=Math.round(dmg*0.88);
+  if(duelState.terrain.id==='mud' && getEffectiveStats(duelState.player).power>7) dmg=Math.round(dmg*1.12);
+  if(duelState.terrain.id==='ice' && getEffectiveStats(duelState.player).weight>7) dmg=Math.round(dmg*0.88);
   duelState.enemyHp=Math.max(0, duelState.enemyHp - dmg);
   if(skill.heal){
     duelState.playerHp=Math.min(duelState.maxPlayerHp, duelState.playerHp + skill.heal);
@@ -2283,7 +2323,7 @@ function aiUseSkill(idx){
   duelState.eCd[idx]=cds[idx];
   const skill=duelState.eSkills[idx];
   let dmg=skill.dmg + Math.floor(Math.random()*5);
-  if(duelState.terrain.id==='mud' && duelState.enemy.stats.power>7) dmg=Math.round(dmg*1.12);
+  if(duelState.terrain.id==='mud' && getEffectiveStats(duelState.enemy).power>7) dmg=Math.round(dmg*1.12);
   duelState.playerHp=Math.max(0, duelState.playerHp - dmg);
   if(skill.heal) duelState.enemyHp=Math.min(duelState.maxEnemyHp, duelState.enemyHp + skill.heal);
   triggerDuelAnim('enemy', 'skill'+(idx+1));
@@ -2511,6 +2551,49 @@ window.mulaiOnlineRace=async()=>{
 }
 
 // Ranking
+async function muatPeringkatKolektor(){
+  const list=document.getElementById('collectorLeaderboardList');
+  if(!list) return;
+  const mine=getCollectionStats();
+  document.getElementById('myUniqueMonsters').textContent=mine.unique;
+  document.getElementById('myTotalStars').textContent=mine.totalStars;
+  document.getElementById('myStar5Count').textContent=mine.star5;
+  list.innerHTML='<div class="bg-white/15 rounded-xl p-3 text-center text-xs font-bold">⏳ Memuat kolektor...</div>';
+  if(!db || !firebaseReady){
+    let local=JSON.parse(localStorage.getItem('mmt_collector_leaderboard')||'[]');
+    renderCollectorLeaderboard(local); return;
+  }
+  try{
+    const q=query(collection(db,'collectorLeaderboard'),orderBy('collectorScore','desc'),limit(10));
+    const snap=await getDocs(q); const data=[]; snap.forEach(d=>data.push(d.data()));
+    renderCollectorLeaderboard(data);
+  }catch(e){
+    console.warn('collector leaderboard',e);
+    const local=JSON.parse(localStorage.getItem('mmt_collector_leaderboard')||'[]'); renderCollectorLeaderboard(local);
+  }
+}
+function renderCollectorLeaderboard(data){
+  const list=document.getElementById('collectorLeaderboardList'); if(!list) return;
+  if(!data.length){ list.innerHTML='<div class="bg-white/15 rounded-xl p-3 text-center text-xs font-bold">Belum ada data kolektor.</div>'; return; }
+  list.innerHTML=data.slice(0,10).map((p,i)=>{
+    const isMe=p.playerId===playerId;
+    return `<div class="bg-white rounded-xl p-2.5 text-slate-800 flex items-center gap-2 ${isMe?'ring-2 ring-amber-300':''}">
+      <div class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs ${i<3?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-500'}">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</div>
+      <div class="flex-1 min-w-0"><div class="font-black text-xs truncate">${p.nama||'Pemain'} ${isMe?'<span class="text-[9px] bg-violet-600 text-white px-1.5 py-0.5 rounded-full">KAMU</span>':''}</div><div class="text-[9px] font-bold text-slate-500">${p.uniqueMonsters||0} unik • ⭐${p.totalStars||0} • ⭐5 ${p.star5Count||0}</div></div>
+      <div class="font-black text-violet-700 text-xs">${p.collectorScore||0} pts</div>
+    </div>`;
+  }).join('');
+}
+async function uploadCollectorScore(){
+  if(!playerName) return;
+  const c=getCollectionStats();
+  const payload={playerId,nama:playerName,collectorScore:c.score,uniqueMonsters:c.unique,totalStars:c.totalStars,star5Count:c.star5Count,avatar:playerAvatar?playerAvatar.substring(0,900000):null,diperbarui:new Date().toISOString()};
+  let local=JSON.parse(localStorage.getItem('mmt_collector_leaderboard')||'[]');
+  const idx=local.findIndex(x=>x.playerId===playerId); if(idx>=0)local[idx]=payload; else local.push(payload);
+  local.sort((a,b)=>b.collectorScore-a.collectorScore); localStorage.setItem('mmt_collector_leaderboard',JSON.stringify(local.slice(0,20)));
+  if(db && firebaseReady){ try{ await setDoc(doc(db,'collectorLeaderboard',playerId),{...payload,diperbarui:serverTimestamp()},{merge:true}); }catch(e){ console.warn(e); } }
+}
+
 window.muatPeringkat=async()=>{
   const list=document.getElementById('leaderboardList');
   list.innerHTML=`<div class="bg-white rounded-2xl p-4 text-center border-2 border-slate-100"><div class="text-2xl mb-1">⏳</div><p class="font-bold text-slate-600 text-sm">Memuat...</p></div>`;
@@ -2613,7 +2696,7 @@ window.resetGame=()=>{
 }
 
 loadState(); initDailyMissions(); renderAll(); switchTab('penetasan'); updateResources();
-setTimeout(()=>{ if(firebaseReady) muatPeringkat(); }, 1200);
+setTimeout(()=>{ if(firebaseReady){ muatPeringkat(); muatPeringkatKolektor(); } }, 1200);
 window.getMonsterImg=getMonsterImg; window.getEggImg=getEggImg;
 </script>
 </body>
